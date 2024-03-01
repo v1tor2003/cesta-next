@@ -1,0 +1,289 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model tabela_auxiliar_cronograma {
+  cronograma_id             Int                       @db.UnsignedInt
+  mes_id                    Int
+  inicio_coleta             DateTime                  @db.Date
+  fim_coleta                DateTime                  @db.Date
+  tabela_cronograma_coletas tabela_cronograma_coletas @relation(fields: [cronograma_id], references: [cronograma_id], onDelete: Cascade, onUpdate: NoAction, map: "tabela_auxiliar_cronograma_ibfk_3")
+  tabela_mes                tabela_mes                @relation(fields: [mes_id], references: [mes_id], onDelete: NoAction, onUpdate: NoAction, map: "tabela_auxiliar_cronograma_ibfk_4")
+
+  @@index([cronograma_id], map: "cronograma_id")
+  @@index([mes_id], map: "mes_id")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model tabela_auxiliar_precos {
+  precos_id     Int
+  preco_produto Decimal       @db.Decimal(16, 2)
+  tabela_precos tabela_precos @relation(fields: [precos_id], references: [precos_id], onDelete: Cascade, onUpdate: NoAction, map: "tabela_auxiliar_precos_ibfk_1")
+
+  @@index([precos_id], map: "INDICE_teste")
+  @@ignore
+}
+
+model tabela_bairros {
+  bairro_id               Int                       @id @default(autoincrement()) @db.UnsignedInt
+  bairro_nome             String                    @db.VarChar(45)
+  cidade_id               Int                       @db.UnsignedInt
+  tabela_cidades          tabela_cidades            @relation(fields: [cidade_id], references: [cidade_id], onDelete: NoAction, onUpdate: NoAction, map: "tabela_bairros_ibfk_1")
+  tabela_estabelecimentos tabela_estabelecimentos[]
+
+  @@index([cidade_id], map: "tabela_bairros_FKIndex1")
+}
+
+model tabela_boletim {
+  boletim_id       Int              @id @db.UnsignedInt
+  boletim_nome     String           @unique(map: "boletim_nome") @db.VarChar(45)
+  tabela_pesquisas tabela_pesquisas @relation(fields: [boletim_id], references: [pesquisa_id], onDelete: Cascade, map: "tabela_boletim_ibfk_1")
+}
+
+model tabela_cidades {
+  cidade_id      Int              @id @default(autoincrement()) @db.UnsignedInt
+  cidade_nome    String           @db.VarChar(45)
+  cidade_data    DateTime         @db.Date
+  tabela_bairros tabela_bairros[]
+}
+
+model tabela_coleta_est_sec {
+  coleta_est_sec_id Int @id @default(autoincrement()) @db.UnsignedInt
+  coleta_id         Int
+  est_has_sec_id    Int @db.UnsignedInt
+  produto_id        Int @db.UnsignedInt
+
+  @@unique([coleta_id, est_has_sec_id, produto_id], map: "coleta_id")
+  @@index([est_has_sec_id], map: "est_has_sec_id")
+  @@index([produto_id], map: "produto_id")
+}
+
+model tabela_coletas {
+  coleta_id               Int                     @id @default(autoincrement())
+  estabelecimento_id      Int                     @db.UnsignedInt
+  pesquisa_id             Int                     @db.UnsignedInt
+  coleta_data             DateTime                @db.Date
+  coleta_preco_cesta      Decimal?                @db.Decimal(16, 2)
+  coleta_fechada          Int?
+  tabela_estabelecimentos tabela_estabelecimentos @relation(fields: [estabelecimento_id], references: [estabelecimento_id], onDelete: NoAction, onUpdate: NoAction, map: "tabela_coletas_ibfk_1")
+  tabela_pesquisas        tabela_pesquisas        @relation(fields: [pesquisa_id], references: [pesquisa_id], onDelete: NoAction, onUpdate: NoAction, map: "tabela_coletas_ibfk_2")
+  tabela_precos           tabela_precos[]
+
+  @@index([pesquisa_id], map: "tabela_coletas_FKIndex1")
+  @@index([estabelecimento_id], map: "tabela_coletas_FKIndex2")
+}
+
+model tabela_cronograma_coletas {
+  cronograma_id              Int                          @id @default(autoincrement()) @db.UnsignedInt
+  ano                        Int                          @db.UnsignedInt
+  tabela_auxiliar_cronograma tabela_auxiliar_cronograma[] @ignore
+}
+
+model tabela_delimitador_racao {
+  delimitador_id            Int                   @id @default(autoincrement()) @db.UnsignedInt
+  delimitador_descricao     String                @db.VarChar(255)
+  delimitador_data_registro DateTime              @db.Date
+  delimitador_em_uso        Int
+  delimitador_oficial       Int                   @db.SmallInt
+  tabela_pesquisas          tabela_pesquisas[]
+  tabela_racao_minima       tabela_racao_minima[]
+}
+
+model tabela_equipe {
+  id               Int      @id @default(autoincrement())
+  nome_completo    String   @db.VarChar(200)
+  email            String   @db.VarChar(50)
+  funcao_id        Int
+  mostrar_home     Boolean? @default(true)
+  mostrar_contatos Boolean? @default(true)
+
+  @@index([funcao_id], map: "funcao_id")
+}
+
+model tabela_equipe_funcoes {
+  id     Int     @id @default(autoincrement())
+  funcao String? @unique(map: "funcao") @db.VarChar(100)
+}
+
+model tabela_estabelecimento_has_secundario {
+  est_has_sec_id         Int @id @default(autoincrement()) @db.UnsignedInt
+  estabelecimento_id     Int @db.UnsignedInt
+  estabelecimento_sec_id Int @db.UnsignedInt
+
+  @@unique([estabelecimento_id, estabelecimento_sec_id], map: "estabelecimento_id")
+  @@index([estabelecimento_sec_id], map: "estabelecimento_sec_id")
+}
+
+model tabela_estabelecimentos {
+  estabelecimento_id          Int              @id @default(autoincrement()) @db.UnsignedInt
+  bairro_id                   Int              @db.UnsignedInt
+  estabelecimento_nome        String           @db.VarChar(45)
+  estabelecimento_data        DateTime         @db.Date
+  estabelecimento_endereco    String?          @db.VarChar(255)
+  estabelecimento_contato     String?          @db.VarChar(45)
+  estabelecimento_telefone    String?          @db.VarChar(20)
+  estabelecimento_referencial String?          @db.VarChar(255)
+  estabelecimento_ativo       Boolean?         @default(true)
+  tabela_coletas              tabela_coletas[]
+  tabela_bairros              tabela_bairros   @relation(fields: [bairro_id], references: [bairro_id], onDelete: NoAction, onUpdate: NoAction, map: "tabela_estabelecimentos_ibfk_14")
+
+  @@index([bairro_id], map: "tabela_estabelecimentos_FKIndex2")
+}
+
+model tabela_estabelecimentos_secundarios {
+  estabelecimento_sec_id   Int    @id @default(autoincrement()) @db.UnsignedInt
+  estabelecimento_sec_nome String @db.VarChar(260)
+}
+
+model tabela_mes {
+  mes_id                     Int                          @id
+  mes_nome                   String                       @db.VarChar(45)
+  tabela_auxiliar_cronograma tabela_auxiliar_cronograma[] @ignore
+}
+
+model tabela_pesquisa_resultados_produtos {
+  produto_id                 Int      @db.UnsignedInt
+  cidade_id                  Int      @db.UnsignedInt
+  pesquisa_id                Int      @db.UnsignedInt
+  produto_variacao_mensal    Decimal? @db.Decimal(16, 2)
+  produto_variacao_semestral Decimal? @db.Decimal(16, 2)
+  produto_variacao_anual     Decimal? @db.Decimal(16, 2)
+  produto_preco_medio        Decimal? @db.Decimal(16, 2)
+  produto_preco_total        Decimal? @db.Decimal(16, 2)
+  produto_tempo_trabalho     Decimal? @db.Decimal(16, 2)
+
+  @@id([produto_id, cidade_id, pesquisa_id])
+  @@index([pesquisa_id, cidade_id], map: "tabela_pesquisas_cidades_has_tabela_produtos_FKIndex1")
+  @@index([produto_id], map: "tabela_pesquisas_cidades_has_tabela_produtos_FKIndex2")
+}
+
+model tabela_pesquisas {
+  pesquisa_id              Int                       @id @default(autoincrement()) @db.UnsignedInt
+  delimitador_id           Int?                      @db.UnsignedInt
+  salario_id               Int?                      @db.UnsignedInt
+  pesquisa_fechada         Int
+  pesquisa_data            DateTime                  @db.Date
+  pesquisa_detalhada       Int?
+  tabela_boletim           tabela_boletim?
+  tabela_coletas           tabela_coletas[]
+  tabela_delimitador_racao tabela_delimitador_racao? @relation(fields: [delimitador_id], references: [delimitador_id], onDelete: NoAction, onUpdate: NoAction, map: "tabela_pesquisas_ibfk_20")
+  tabela_salarios          tabela_salarios?          @relation(fields: [salario_id], references: [salario_id], onDelete: NoAction, onUpdate: NoAction, map: "tabela_pesquisas_ibfk_21")
+
+  @@index([salario_id], map: "tabela_pesquisas_FKIndex1")
+  @@index([delimitador_id], map: "tabela_pesquisas_FKIndex2")
+}
+
+model tabela_pesquisas_cidades {
+  pesquisa_id        Int      @db.UnsignedInt
+  cidade_id          Int      @db.UnsignedInt
+  variacao_mensal    Decimal? @db.Decimal(16, 2)
+  variacao_semestral Decimal? @db.Decimal(16, 2)
+  variacao_anual     Decimal? @db.Decimal(16, 2)
+  gasto_mensal_cesta Decimal? @db.Decimal(16, 2)
+  tempo_trabalho     Decimal? @db.Decimal(16, 2)
+
+  @@id([pesquisa_id, cidade_id])
+  @@index([pesquisa_id], map: "tabela_pesquisas_has_tabela_cidades_FKIndex1")
+  @@index([cidade_id], map: "tabela_pesquisas_has_tabela_cidades_FKIndex2")
+}
+
+model tabela_precos {
+  precos_id              Int                      @id @default(autoincrement())
+  medida_id              Int                      @db.UnsignedInt
+  produto_id             Int                      @db.UnsignedInt
+  coleta_id              Int
+  precos_media_observado Decimal?                 @db.Decimal(16, 2)
+  precos_media           Decimal?                 @db.Decimal(16, 2)
+  precos_total           Decimal?                 @db.Decimal(16, 2)
+  tabela_auxiliar_precos tabela_auxiliar_precos[] @ignore
+  tabela_coletas         tabela_coletas           @relation(fields: [coleta_id], references: [coleta_id], onDelete: NoAction, onUpdate: NoAction, map: "tabela_precos_ibfk_7")
+  tabela_produtos        tabela_produtos          @relation(fields: [produto_id], references: [produto_id], onDelete: NoAction, onUpdate: NoAction, map: "tabela_precos_ibfk_8")
+
+  @@index([coleta_id], map: "Table_19_FKIndex1")
+  @@index([produto_id, medida_id], map: "Table_19_FKIndex2")
+}
+
+model tabela_produtos {
+  produto_id                Int                       @id @default(autoincrement()) @db.UnsignedInt
+  produto_nome              String                    @db.VarChar(45)
+  produto_cesta             Int
+  produto_nome_visualizacao String                    @db.VarChar(45)
+  produto_tipo              Int                       @db.UnsignedInt
+  tabela_precos             tabela_precos[]
+  tabela_produtos_medidas   tabela_produtos_medidas[]
+  tabela_racao_minima       tabela_racao_minima[]
+}
+
+model tabela_produtos_medidas {
+  produto_id             Int                    @db.UnsignedInt
+  medida_id              Int                    @db.UnsignedInt
+  medida_pesquisada      Decimal                @db.Decimal(16, 3)
+  tabela_produtos        tabela_produtos        @relation(fields: [produto_id], references: [produto_id], onDelete: Cascade, onUpdate: NoAction, map: "tabela_produtos_medidas_ibfk_3")
+  tabela_unidade_medidas tabela_unidade_medidas @relation(fields: [medida_id], references: [medida_id], onDelete: NoAction, onUpdate: NoAction, map: "tabela_produtos_medidas_ibfk_4")
+
+  @@id([produto_id, medida_id])
+  @@index([produto_id], map: "tabela_produtos_has_tabela_unidade_medidas_FKIndex1")
+  @@index([medida_id], map: "tabela_produtos_has_tabela_unidade_medidas_FKIndex2")
+}
+
+model tabela_racao_minima {
+  delimitador_id             Int                      @db.UnsignedInt
+  produto_id                 Int                      @db.UnsignedInt
+  medida_id                  Int                      @db.UnsignedInt
+  racao_minima_quantidade    Decimal                  @db.Decimal(10, 2)
+  racao_minima_transformador Decimal                  @db.Decimal(10, 2)
+  racao_minima_medida        Int
+  tabela_produtos            tabela_produtos          @relation(fields: [produto_id], references: [produto_id], onDelete: NoAction, onUpdate: NoAction, map: "tabela_racao_minima_ibfk_10")
+  tabela_delimitador_racao   tabela_delimitador_racao @relation(fields: [delimitador_id], references: [delimitador_id], onDelete: NoAction, onUpdate: NoAction, map: "tabela_racao_minima_ibfk_7")
+  tabela_unidade_medidas     tabela_unidade_medidas   @relation(fields: [medida_id], references: [medida_id], onDelete: NoAction, onUpdate: NoAction, map: "tabela_racao_minima_ibfk_9")
+
+  @@id([delimitador_id, produto_id, medida_id])
+  @@index([medida_id], map: "medida_id")
+  @@index([produto_id, medida_id], map: "tabela_produtos_medidas_has_tabela_delimitador_racao_FKIndex1")
+  @@index([delimitador_id], map: "tabela_produtos_medidas_has_tabela_delimitador_racao_FKIndex2")
+}
+
+model tabela_salarios {
+  salario_id            Int                @id @default(autoincrement()) @db.UnsignedInt
+  salario_valor_bruto   Decimal            @db.Decimal(16, 2)
+  salario_valor_liquido Decimal            @db.Decimal(16, 2)
+  salario_em_uso        Int
+  salario_data_registro DateTime           @db.Date
+  salario_nome          String             @db.VarChar(20)
+  salario_simbolo       String             @db.VarChar(20)
+  tabela_pesquisas      tabela_pesquisas[]
+}
+
+model tabela_sessao {
+  sessao_id      String @id @db.VarChar(128)
+  sessao_usuario Int
+  sessao_ip      String @db.VarChar(16)
+  sessao_tempo   BigInt
+}
+
+model tabela_tipos_produtos {
+  tipo_id   Int    @id @default(autoincrement()) @db.UnsignedInt
+  tipo_nome String @unique(map: "tipo_nome") @db.VarChar(45)
+}
+
+model tabela_unidade_medidas {
+  medida_id               Int                       @id @default(autoincrement()) @db.UnsignedInt
+  medida_descricao        String                    @db.VarChar(20)
+  medida_simbolo          String                    @db.VarChar(20)
+  tabela_produtos_medidas tabela_produtos_medidas[]
+  tabela_racao_minima     tabela_racao_minima[]
+}
+
+model tabela_usuarios {
+  usuario_id    Int    @id @default(autoincrement())
+  usuario_nome  String @db.VarChar(64)
+  usuario_senha String @db.VarChar(128)
+  usuario_email String @db.VarChar(255)
+}
