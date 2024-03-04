@@ -4,4 +4,9 @@ export const navbarOptions = [
     url: '/',
     children: []
   },
+  {
+    label: 'login',
+    url: '/login',
+    children: []
+  },
 ]

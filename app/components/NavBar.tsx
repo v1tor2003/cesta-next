@@ -1,4 +1,4 @@
-import { NavBarProps } from "../types";
+import { NavBarProps } from "../lib/types";
 import NavBarOption from "./NavBarOption";
 
 export default function NavBar({options}: NavBarProps) {

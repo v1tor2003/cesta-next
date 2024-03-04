@@ -1,7 +1,6 @@
 "use client"
 import { useState } from "react";
-import { NavBarOptionProps } from "../types";
-import { NavLinkProps } from "../types";
+import { NavBarOptionProps, NavLinkProps } from "../lib/types";
 import Link from "next/link";
 
 const NavLink = ({url, label, showChildren, isRoot}: NavLinkProps) => {
