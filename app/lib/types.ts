@@ -1,6 +1,7 @@
 export type NavBarOptionProps = 
 {
-  label: string,
+  icon: React.ReactNode
+  label: string
   url: string
   children?: NavBarOptionProps[]
 }
@@ -8,12 +9,4 @@ export type NavBarOptionProps =
 export type NavBarProps = 
 {
   options: NavBarOptionProps[]
-}
-
-export type NavLinkProps =
-{
-  label: string,
-  url: string,
-  isRoot: boolean,
-  showChildren: () => void
 }
