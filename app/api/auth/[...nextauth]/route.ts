@@ -1,14 +1,11 @@
-import prisma from "@/app/lib/prisma"
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from 'bcrypt'
+import prisma from "@/app/lib/prisma"
 
 const handler = NextAuth({
-  session: {
-    strategy: "jwt"
-  },
   pages:{
-
+    signIn: '/login'
   },
   providers: [
     CredentialsProvider({
@@ -18,12 +15,6 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
         const {email, password} = credentials as {
           email: string,
           password: string
@@ -46,12 +37,22 @@ const handler = NextAuth({
         }
 
         if(passwordMatches) return user
-        // should return a user if authenticated
-        // Return null if user data could not be retrieved
         return null
       }
     })
-  ]
+  ],
+  callbacks: {
+    // we can add properties from the user to the token
+    async jwt({token, user}){
+      if(user) token.name = user.name
+      return token
+    },
+    // we can add properties from the token to the session
+    async session({session, token}){
+      if(session?.user) session.user.name = token.name
+      return session
+    },
+  }
 })
 
 export { handler as GET, handler as POST }

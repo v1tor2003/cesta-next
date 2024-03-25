@@ -1,45 +1,38 @@
-import { FaHome } from "react-icons/fa";
 import { IoIosCreate } from "react-icons/io";
 
 export const navbarOptions = [
   {
-    icon: <FaHome/>,
-    label: 'Home',
-    url: '/',
-    children: []
-  },
-  {
     icon: <IoIosCreate />,
     label: 'Cadastros',
-    url: '/',
+    url: '#',
     children: [
       {
         icon: null,
         label: 'Gerenciamento',
-        url: '/',
+        url: '#',
         children: [
           {
             icon: null,
             label: 'Usuário',
-            url: '/',
+            url: '#',
             children: []
           },
           {
             icon: null,
             label: 'Membros da Equipe',
-            url: '/',
+            url: '#',
             children: []
           },
           {
             icon: null,
             label: 'Salários',
-            url: '/',
+            url: '#',
             children: []
           },
           {
             icon: null,
             label: 'Cesta Básica Oficial',
-            url: '/',
+            url: '#',
             children: []
           }
         ]
@@ -47,24 +40,24 @@ export const navbarOptions = [
       {
         icon: null,
         label: 'Estabelecimentos',
-        url: '/',
+        url: '#',
         children: [
           {
             icon: null,
             label: 'Cidade',
-            url: '/',
+            url: '#',
             children: []
           },
           {
             icon: null,
             label: 'Bairro',
-            url: '/',
+            url: '#',
             children: []
           },
           {
             icon: null,
             label: 'Cadastrar',
-            url: '/',
+            url: '#',
             children: []
           }
         ]
@@ -72,35 +65,40 @@ export const navbarOptions = [
       {
         icon: null,
         label: 'Produtos',
-        url: '/',
+        url: '#',
         children: [
           {
             icon: null,
             label: 'Unidade de Medida',
-            url: '/',
+            url: '#',
             children: []
           },
           {
             icon: null,
             label: 'Tipo',
-            url: '/',
+            url: '#',
             children: []
           },
           {
             icon: null,
             label: 'Cadastrar',
-            url: '/',
+            url: '#',
             children: []
           },
           {
             icon: null,
             label: 'Outros',
-            url: '/',
+            url: '#',
             children: []
           }
         ]
       },
     ]
   },
-  
+  {
+    icon: <IoIosCreate />,
+    label: 'Opcao',
+    url: '#',
+    children: []
+  }
 ]
