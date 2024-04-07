@@ -1,8 +1,14 @@
-import { IoIosCreate } from "react-icons/io";
+import { FaHome, FaSave } from "react-icons/fa";
+import { FaGear } from "react-icons/fa6";
 
 export const navbarOptions = [
   {
-    icon: <IoIosCreate />,
+    icon: <FaHome/>,
+    label: 'Home',
+    url: '/dashboard/home',
+  },
+  {
+    icon: <FaSave/>,
     label: 'Cadastros',
     url: '#',
     children: [
@@ -96,8 +102,8 @@ export const navbarOptions = [
     ]
   },
   {
-    icon: <IoIosCreate />,
-    label: 'Opcao',
+    icon: <FaGear />,
+    label: 'Opcoes',
     url: '#',
     children: []
   }

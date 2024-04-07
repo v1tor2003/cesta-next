@@ -8,5 +8,6 @@ export type NavBarOptionProps =
 
 export type NavBarProps = 
 {
+  className?: string
   options: NavBarOptionProps[]
 }

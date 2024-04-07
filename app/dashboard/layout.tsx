@@ -8,14 +8,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex min-h-screen">
-      <div className="pt-20 w-72 shrink-0 border-r border-gray-200 bg-gray-50 py-4">
-        <Header />
-        <NavBar options={navbarOptions}/>  
-
+    <div className="flex flex-col h-dvh">
+      <Header className="px-14 py-2 flex w-full h-10 bg-red-300 justify-between"/>
+      <div className="flex h-dvh w-full">
+        <NavBar className="flex flex-col w-64 bg-red-300" options={navbarOptions}/>  
+        <main className="grow">{children}</main>
       </div>
-      
-      <main className="p-4">{children}</main>
     </div>
   );
 }
