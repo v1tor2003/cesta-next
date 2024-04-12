@@ -1,18 +1,23 @@
+'use client'
+import { useState } from "react";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 import { navbarOptions } from "../lib/navConstants";
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [isNavOpen, setNavOpen] = useState<boolean>(false)
+  const toggleNav = () => { setNavOpen(!isNavOpen) }
+
   return (
     <div className="flex flex-col h-dvh">
-      <Header className="px-14 py-2 flex w-full h-10 bg-red-300 justify-between"/>
-      <div className="flex h-dvh w-full">
-        <NavBar className="flex flex-col w-64 bg-red-300" options={navbarOptions}/>  
-        <main className="grow">{children}</main>
+      <Header isNavOpen={isNavOpen} toggleNav={toggleNav}/>
+      <div className="flex w-full h-dvh pt-16">
+        <NavBar isNavOpen={isNavOpen} options={navbarOptions}/>  
+        <main className={`${isNavOpen ? 'hidden' : 'block'} grow`}>{children}</main>
       </div>
     </div>
   );

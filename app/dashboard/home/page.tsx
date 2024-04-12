@@ -1,5 +1,5 @@
-export default async function page() {
+export default async function Home() {
   return (
-    <div>Home Page</div>
+    <div className="bg-accb-green w-full h-full">Home Page</div>
   )
 }

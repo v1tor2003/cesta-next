@@ -11,9 +11,9 @@ const NavLink = ({icon, url, label, children}: NavBarOptionProps) => {
       {({ open }) => (
         <>
           <Disclosure.Button className="flex items-center w-full rounded-md py-2 px-3 text-left text-sm hover:bg-gray-100">
-            <div className="mr-2">{icon}</div>
+            <div className="mr-2 w-4 h-auto text-accb-green">{icon}</div>
             
-              <a className="flex-grow">{label}</a>
+              <a className="flex-grow text-accb-green font-semibold text-lg">{label}</a>
             
             {children && children.length > 0 && <FaChevronDown className={`transform ${open ? 'rotate-180' : 'rotate-0'}`} />}
           </Disclosure.Button>
@@ -46,7 +46,7 @@ const NavLink = ({icon, url, label, children}: NavBarOptionProps) => {
 
 export default function NavBarOption( { icon, label, url, children}: NavBarOptionProps) {
   return (
-    <div className="ml-4 mr-4 mt-2">
+    <div className="ml-4 mr-4 mt-2 px-8">
       <NavLink 
         icon={icon}
         label={label}

@@ -8,6 +8,13 @@ export type NavBarOptionProps =
 
 export type NavBarProps = 
 {
-  className?: string
   options: NavBarOptionProps[]
+  isNavOpen: boolean
 }
+
+export interface HeaderProps 
+{
+  isNavOpen: boolean
+  toggleNav: () => void
+}
+
