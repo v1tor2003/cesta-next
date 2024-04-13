@@ -1,14 +1,17 @@
-import { FaHome, FaSave } from "react-icons/fa";
-import { FaGear } from "react-icons/fa6";
+import { FaHome } from "react-icons/fa";
+import { FaBoxOpen, FaDatabase, FaFileLines, FaGear } from "react-icons/fa6";
+import { IoCreate } from "react-icons/io5";
+
+const levelOneIconStyle: string = 'w-6 h-auto'
 
 export const navbarOptions = [
   {
-    icon: <FaHome/>,
+    icon: <FaHome className={levelOneIconStyle}/>,
     label: 'Home',
     url: '/dashboard/home',
   },
   {
-    icon: <FaSave/>,
+    icon: <IoCreate className={levelOneIconStyle}/>,
     label: 'Cadastros',
     url: '#',
     children: [
@@ -102,9 +105,93 @@ export const navbarOptions = [
     ]
   },
   {
-    icon: <FaGear />,
-    label: 'Opcoes',
+    icon: <FaBoxOpen className={levelOneIconStyle} />,
+    label: 'Coletas',
     url: '#',
-    children: []
+    children: [
+      {
+        label: 'Pesquisas',
+        url: '#',
+        children: []
+      },
+      {
+        label: 'Pesquisas Antigas',
+        url: '#',
+        children: []
+      }
+    ]
+  },
+  {
+    icon: <FaFileLines className={levelOneIconStyle} />,
+    label: 'Boletim',
+    url: '#',
+    children: [
+      {
+        label: 'Gerar',
+        url: '#',
+        children: []
+      },
+      {
+        label: 'Arquivar',
+        url: '#',
+        children: []
+      },
+      
+    ]
+  },
+  {
+    icon: <FaDatabase className={levelOneIconStyle}/>,
+    label: 'Consultas',
+    url: '#',
+    children: [
+      {
+        label: 'Tabelas',
+        url: '#',
+        children: [
+          {
+            label: 'Por Cidade',
+            url: '#',
+            children: []
+          },
+          {
+            label: 'Por Produto',
+            url: '#',
+            children: []
+          },
+          {
+            label: 'Por Data de Referência',
+            url: '#',
+            children: []
+          },
+        ]
+      },
+      {
+        label: 'Gráficos',
+        url: '#',
+        children: [
+          {
+            label: 'Por Cidade',
+            url: '#',
+            children: []
+          },
+          {
+            label: 'Por Produto',
+            url: '#',
+            children: []
+          }
+        ]      
+      },
+      {
+        label: 'Coletas',
+        url: '#',
+        children: [
+          {
+            label: 'Semanal',
+            url: '#',
+            children: []
+          }
+        ]
+      }
+    ]
   }
 ]

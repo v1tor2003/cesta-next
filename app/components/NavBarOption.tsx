@@ -1,7 +1,7 @@
 "use client"
 import { Disclosure, Transition } from "@headlessui/react";
 import { NavBarOptionProps } from "../lib/types";
-import Link from "next/link";
+//import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa";
 
 const NavLink = ({icon, url, label, children}: NavBarOptionProps) => {
@@ -11,11 +11,10 @@ const NavLink = ({icon, url, label, children}: NavBarOptionProps) => {
       {({ open }) => (
         <>
           <Disclosure.Button className="flex items-center w-full rounded-md py-2 px-3 text-left text-sm hover:bg-gray-100">
-            <div className="mr-2 w-4 h-auto text-accb-green">{icon}</div>
-            
-              <a className="flex-grow text-accb-green font-semibold text-lg">{label}</a>
-            
-            {children && children.length > 0 && <FaChevronDown className={`transform ${open ? 'rotate-180' : 'rotate-0'}`} />}
+            <div className="text-accb-green">{icon}</div>
+            <a href={url} className="ml-2 mt-2 grow text-accb-green font-semibold text-xl">{label}</a>
+            {/*<Link href={url} legacyBehavior><span className="ml-2 mt-2 grow text-accb-green font-semibold text-xl">{label}</span></Link>*/}
+            {children && children.length > 0 && <FaChevronDown className={`w-4 h-auto transform ${open ? 'rotate-180' : 'rotate-0'}`} />}
           </Disclosure.Button>
           <Transition
             enter="transition duration-100 ease-out"
