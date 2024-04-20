@@ -7,23 +7,23 @@ const levelOneIconStyle: string = 'w-6 h-auto'
 export const navbarOptions = [
   {
     icon: <FaHome className={levelOneIconStyle}/>,
-    label: 'Home',
+    label: 'Início',
     url: '/dashboard/home',
   },
   {
     icon: <IoCreate className={levelOneIconStyle}/>,
     label: 'Cadastros',
-    url: '#',
+    url: '/dashboard/cadastros',
     children: [
       {
         icon: null,
         label: 'Gerenciamento',
-        url: '#',
+        url: '/gerenciamento',
         children: [
           {
             icon: null,
             label: 'Usuário',
-            url: '#',
+            url: '/users',
             children: []
           },
           {
