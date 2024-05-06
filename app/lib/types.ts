@@ -18,3 +18,9 @@ export interface HeaderProps
   toggleNav: () => void
 }
 
+export interface FormButtonProps 
+{
+  pending: boolean
+  buttonLabel: string
+  className: string | undefined
+}

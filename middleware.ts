@@ -8,7 +8,7 @@ export default withAuth(
     if(
       req.nextUrl.pathname.startsWith('/dashboard') &&
       !req.nextauth.token
-    ) return NextResponse.rewrite(new URL('/login', req.url))
+    ) return NextResponse.rewrite(new URL('/auth/login', req.url))
   },
   {
     callbacks: {

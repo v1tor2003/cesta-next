@@ -5,7 +5,7 @@ import prisma from "@/app/lib/prisma"
 
 const handler = NextAuth({
   pages:{
-    signIn: '/login'
+    signIn: '/auth/login'
   },
   providers: [
     CredentialsProvider({
@@ -25,9 +25,9 @@ const handler = NextAuth({
             usuario_email: email
           }
         })
-
-        if(!res) return null
         
+        if(!res) return null
+       
         const passwordMatches = bcrypt.compareSync(password, res.usuario_senha)
         
         const user = {
