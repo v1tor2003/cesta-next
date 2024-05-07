@@ -9,6 +9,7 @@ import { z } from "zod";
 import { useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+
 import SubmitForm from "@/app/components/SubmitForm";
 
 function handleLoginError(errorCode: string): string {
@@ -41,7 +42,7 @@ export default function LoginForm() {
   return (
     <div>
       {loginError && 
-        <div className="bg-red-100 rounded-md mb-2">
+        <div className="bg-red-100 rounded-md mb-2 mx-6">
           <p className="p-2 text-red-600 text-xs italic">{loginError}</p>
         </div> 
       }
@@ -50,12 +51,15 @@ export default function LoginForm() {
         ref={formRef} 
         onSubmit={(e) => {
           e.preventDefault()
+          
           handleSubmit(async () => {
             const form = new FormData(formRef.current!)
             const data = {
               email: form.get('email') as string,
               password: form.get('password') as string
             }
+
+            await new Promise(resolve => setTimeout(resolve, 3000))
 
             const res = await signIn('credentials', {
               redirect: false,

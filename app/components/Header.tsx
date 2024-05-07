@@ -1,7 +1,6 @@
 'use client'
 import Image from 'next/image'
 import accbLogo from '@/public/accbLogo.png'
-import { useSession } from 'next-auth/react'
 import { FaBars } from 'react-icons/fa6'
 import { HeaderProps } from '../lib/types'
 import { FaTimes } from 'react-icons/fa'
@@ -12,7 +11,6 @@ export default function Header({isNavOpen, toggleNav}: HeaderProps) {
   const [isAtTop, setisAtTop] = useState<boolean>(true)
 
   const toggleIconStyle: string = 'w-6 h-auto text-accb-green';
-  // const { data: session } = useSession();
 
   useEffect(() => {
     const handleScroll = () => {

@@ -32,7 +32,7 @@ export default function RegisterForm() {
   return (
     <div>
       {state.message !== '' && 
-        <div className="bg-red-100 rounded-md mb-2">
+        <div className="bg-red-100 rounded-md mb-2 mx-6">
           <p className="p-2 text-red-600 text-xs italic">{state.message}</p>
         </div> 
       }
