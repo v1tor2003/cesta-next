@@ -59,8 +59,6 @@ export default function LoginForm() {
               password: form.get('password') as string
             }
 
-            await new Promise(resolve => setTimeout(resolve, 3000))
-
             const res = await signIn('credentials', {
               redirect: false,
               ...data
