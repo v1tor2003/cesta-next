@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 import { navbarOptions } from "../lib/navConstants";
@@ -9,14 +9,34 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [isNavOpen, setNavOpen] = useState<boolean>(false)
-  const toggleNav = () => { setNavOpen(!isNavOpen) }
+  const screenMd: number = 768
+  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < screenMd)
+  const [showToggle, setShowToggle] = useState<boolean>(false)
+  const [isNavOpen, setIsNavOpen] = useState<boolean>(false)
+
+  const toggleNav = () => setIsNavOpen(!isNavOpen)
+  const closeNav = () => {if (window.innerWidth > screenMd) setIsNavOpen(false)}
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < screenMd)
+      closeNav()
+    }
+    
+    setShowToggle(isMobile)
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [isMobile])
+  
+  console.log('nav is open:', isNavOpen)
+  console.log('is mobile:', isMobile)
+
 
   return (
     <div className="flex flex-col h-dvh">
-      <Header isNavOpen={isNavOpen} toggleNav={toggleNav}/>
+      <Header showToggle={showToggle} isNavOpen={isNavOpen} toggleNav={toggleNav}/>
       <div className="flex w-full h-dvh pt-16">
-        <NavBar isNavOpen={isNavOpen} options={navbarOptions}/>  
+        <NavBar isNavOpen={isNavOpen} isMobile={isMobile} options={navbarOptions}/>  
         <main className={`${isNavOpen ? 'hidden' : 'block'} grow`}>{children}</main>
       </div>
     </div>

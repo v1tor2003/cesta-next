@@ -9,6 +9,7 @@ export const navbarOptions = [
     icon: <FaHome className={levelOneIconStyle}/>,
     label: 'Início',
     url: '/dashboard/home',
+    children: []
   },
   {
     icon: <IoCreate className={levelOneIconStyle}/>,

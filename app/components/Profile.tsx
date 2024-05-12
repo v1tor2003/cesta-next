@@ -3,7 +3,7 @@ import { signOut, useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { MdLogout } from "react-icons/md"
 
-export default function HeaderProfile() {
+export default function Profile() {
   const {data: session} = useSession()
   const [userName, setUserName] = useState<string>('')
 

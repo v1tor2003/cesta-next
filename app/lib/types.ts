@@ -10,11 +10,13 @@ export type NavBarProps =
 {
   options: NavBarOptionProps[]
   isNavOpen: boolean
+  isMobile: boolean
 }
 
 export interface HeaderProps 
 {
   isNavOpen: boolean
+  showToggle: boolean
   toggleNav: () => void
 }
 

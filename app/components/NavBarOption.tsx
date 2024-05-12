@@ -5,18 +5,17 @@ import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa";
 
 const NavLink = ({icon, url, label, children}: NavBarOptionProps) => {
-  
   return (
     <Disclosure>
       {({ open }) => (
         <>
-          <Disclosure.Button className="flex items-center w-full rounded-md py-2 px-3 text-left text-sm hover:bg-gray-100">
+          <Disclosure.Button className="flex items-center w-full space-x-2 rounded-md py-2 px-3 text-left text-sm hover:bg-gray-100">
             <div className="text-accb-green">{icon}</div>
             {children && children.length > 0 ? (
-              <span className="ml-2 mt-2 grow text-accb-green font-semibold text-xl">{label}</span>
+              <span className="grow text-accb-green font-medium text-xl">{label}</span>
               ) : (
               <Link href={url} legacyBehavior>
-                <span className="ml-2 mt-2 grow text-accb-green font-semibold text-xl">{label}</span>
+                <span className="grow text-accb-green font-medium text-xl">{label}</span>
               </Link>
             )}
             {children && children.length > 0 && <FaChevronDown className={`w-4 h-auto transform ${open ? 'rotate-180' : 'rotate-0'}`} />}
@@ -51,7 +50,7 @@ const NavLink = ({icon, url, label, children}: NavBarOptionProps) => {
 
 export default function NavBarOption( { icon, label, url, children}: NavBarOptionProps) {
   return (
-    <div className="ml-4 mr-4 mt-2 px-8">
+    <div className="md:mx-4 md:px-2 mt-2 px-8">
       <NavLink 
         icon={icon}
         label={label}
