@@ -3,6 +3,6 @@ export default async function Users() {
   await new Promise(resolve => setTimeout(resolve, 3000))
   
   return (
-    <div>users</div>
+    <div className="pt-10">users</div>
   )
 }

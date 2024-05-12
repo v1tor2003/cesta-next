@@ -3,22 +3,35 @@ import { Disclosure, Transition } from "@headlessui/react";
 import { NavBarOptionProps } from "../lib/types";
 import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa";
+import { usePathname } from "next/navigation";
 
-const NavLink = ({icon, url, label, children}: NavBarOptionProps) => {
+interface NavLinkProps {
+  icon: React.ReactNode
+  label: string
+  url: string
+  children?: NavBarOptionProps[]
+  isActive: boolean
+}
+
+const NavLink = ({icon, url, label, children, isActive}: NavLinkProps) => {
+  const path = usePathname()
+
   return (
     <Disclosure>
       {({ open }) => (
         <>
-          <Disclosure.Button className="flex items-center w-full space-x-2 rounded-md py-2 px-3 text-left text-sm hover:bg-gray-100">
-            <div className="text-accb-green">{icon}</div>
+          <Disclosure.Button 
+            className={`${isActive ? 'bg-accb-green hover:opacity-75': 'hover:bg-gray-200'} flex items-center w-full space-x-2 rounded-md mt-1 py-2 px-3 text-left text-sm `}
+          >
+            <div className={`${isActive ? 'text-white': 'text-accb-green'} `}>{icon}</div>
             {children && children.length > 0 ? (
-              <span className="grow text-accb-green font-medium text-xl">{label}</span>
+              <span className={`${isActive ? 'text-white': 'text-accb-green'} grow font-medium text-xl`}>{label}</span>
               ) : (
               <Link href={url} legacyBehavior>
-                <span className="grow text-accb-green font-medium text-xl">{label}</span>
+                <span className={`${isActive ? 'text-white': 'text-accb-green'} grow font-medium text-xl`}>{label}</span>
               </Link>
             )}
-            {children && children.length > 0 && <FaChevronDown className={`w-4 h-auto transform ${open ? 'rotate-180' : 'rotate-0'}`} />}
+            {children && children.length > 0 && <FaChevronDown className={`${isActive ? 'text-white': 'text-accb-green'} w-4 h-auto transform ${open ? 'rotate-180' : 'rotate-0'}`} />}
           </Disclosure.Button>
           <Transition
             enter="transition duration-100 ease-out"
@@ -28,19 +41,19 @@ const NavLink = ({icon, url, label, children}: NavBarOptionProps) => {
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
           >
-            <Disclosure.Panel>
-              
-                <div className="ml-4">
-                  {children && children.map((child, key) =>
-                    <NavLink
-                      icon={child.icon}
-                      label={child.label}
-                      url={`${url}${child.url}`}
-                      children={child.children}
-                      key={`child-${child.label}-${key}`} />)
-                  }
-                </div>
-              </Disclosure.Panel>
+          <Disclosure.Panel>
+            <div className="ml-4">
+              {children && children.map((child, key) =>
+                <NavLink
+                  icon={child.icon}
+                  label={child.label}
+                  url={`${url}${child.url}`}
+                  children={child.children}
+                  isActive={path.startsWith(`${url}${child.url}`)}
+                  key={`child-${child.label}-${key}`} />)
+              }
+            </div>
+          </Disclosure.Panel>
           </Transition>
         </>
       )}
@@ -49,6 +62,7 @@ const NavLink = ({icon, url, label, children}: NavBarOptionProps) => {
 }
 
 export default function NavBarOption( { icon, label, url, children}: NavBarOptionProps) {
+  const path = usePathname()
   return (
     <div className="md:mx-4 md:px-2 mt-2 px-8">
       <NavLink 
@@ -56,6 +70,7 @@ export default function NavBarOption( { icon, label, url, children}: NavBarOptio
         label={label}
         url={url}
         children={children}
+        isActive={path.startsWith(url)}
       />      
     </div>
   )

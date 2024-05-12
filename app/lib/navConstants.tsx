@@ -1,5 +1,5 @@
 import { FaHome } from "react-icons/fa";
-import { FaBoxOpen, FaDatabase, FaFileLines, FaGear } from "react-icons/fa6";
+import { FaBoxOpen, FaDatabase, FaFileLines } from "react-icons/fa6";
 import { IoCreate } from "react-icons/io5";
 
 const levelOneIconStyle: string = 'w-6 h-auto'

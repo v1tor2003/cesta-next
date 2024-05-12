@@ -27,10 +27,6 @@ export default function RootLayout({
 
     return () => window.removeEventListener('resize', handleResize)
   }, [isMobile])
-  
-  console.log('nav is open:', isNavOpen)
-  console.log('is mobile:', isMobile)
-
 
   return (
     <div className="flex flex-col h-dvh">
