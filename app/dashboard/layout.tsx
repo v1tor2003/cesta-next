@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <div className="flex flex-col h-dvh">
       <Header showToggle={showToggle} isNavOpen={isNavOpen} toggleNav={toggleNav}/>
-      <div className="flex w-full h-dvh pt-16">
+      <div className="flex w-full h-dvh pt-16 md:pt-20">
         <NavBar isNavOpen={isNavOpen} isMobile={isMobile} options={navbarOptions}/>  
         <main className={`${isNavOpen ? 'hidden' : 'block'} grow`}>{children}</main>
       </div>
