@@ -23,8 +23,8 @@ export const navbarOptions = [
         children: [
           {
             icon: null,
-            label: 'Usuário',
-            url: '/users',
+            label: 'Usuários',
+            url: '/usuarios',
             children: []
           },
           {
