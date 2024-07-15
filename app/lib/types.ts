@@ -1,3 +1,5 @@
+import { tabela_usuarios } from "@prisma/client"
+
 export type NavBarOptionProps = 
 {
   icon: React.ReactNode
@@ -26,3 +28,5 @@ export interface FormButtonProps
   buttonLabel: string
   className: string | undefined
 }
+
+export interface User extends tabela_usuarios{}

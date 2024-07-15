@@ -1,9 +1,7 @@
 'use client'
-import { tabela_usuarios } from "@prisma/client";
 import { createColumnHelper } from "@tanstack/react-table";
 import Table from "./Table";
-
-export interface User extends tabela_usuarios{}
+import { User } from "../lib/types";
 
 interface UsersTableProps{
   data: User[]
