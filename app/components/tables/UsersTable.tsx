@@ -1,7 +1,7 @@
 'use client'
 import { createColumnHelper } from "@tanstack/react-table";
 import Table from "./Table";
-import { User } from "../lib/types";
+import { User } from "@/app/lib/types";
 
 interface UsersTableProps{
   data: User[]

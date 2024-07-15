@@ -29,4 +29,4 @@ export interface FormButtonProps
   className: string | undefined
 }
 
-export interface User extends tabela_usuarios{}
+export type User = Omit<tabela_usuarios, "usuario_senha">

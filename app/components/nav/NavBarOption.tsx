@@ -1,6 +1,6 @@
 "use client"
 import { Disclosure, Transition } from "@headlessui/react";
-import { NavBarOptionProps } from "../lib/types";
+import { NavBarOptionProps } from "../../lib/types";
 import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa";
 import { usePathname } from "next/navigation";

@@ -1,4 +1,4 @@
-import { FormButtonProps } from "../lib/types"
+import { FormButtonProps } from "../../lib/types"
 
 export default function SubmitForm({pending,buttonLabel, className}: FormButtonProps) {  
   return (

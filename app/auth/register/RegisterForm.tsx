@@ -1,5 +1,5 @@
 'use client'
-import SubmitForm from "@/app/components/SubmitForm";
+import SubmitForm from "@/app/components/forms/SubmitForm";
 import Link from "next/link";
 
 import { useFormState } from "react-dom";

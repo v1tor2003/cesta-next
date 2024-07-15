@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
-import NavBar from "../components/NavBar";
+import Header from "../components/layout/Header";
+import NavBar from "../components/nav/NavBar";
 import { navbarOptions } from "../lib/navConstants";
 
 export default function RootLayout({

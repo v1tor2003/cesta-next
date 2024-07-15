@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import accbLogo from '@/public/accbLogo.png'
 import { FaBars } from 'react-icons/fa6'
-import { HeaderProps } from '../lib/types'
+import { HeaderProps } from '../../lib/types'
 import { FaTimes } from 'react-icons/fa'
 
 export default function Header({showToggle, isNavOpen,toggleNav}: HeaderProps) {

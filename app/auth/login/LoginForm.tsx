@@ -10,7 +10,7 @@ import { useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-import SubmitForm from "@/app/components/SubmitForm";
+import SubmitForm from "@/app/components/forms/SubmitForm";
 
 function handleLoginError(errorCode: string): string {
   switch (errorCode) {
