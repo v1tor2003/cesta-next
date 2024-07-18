@@ -1,10 +1,11 @@
 import { FaHome } from "react-icons/fa";
 import { FaBoxOpen, FaDatabase, FaFileLines } from "react-icons/fa6";
 import { IoCreate } from "react-icons/io5";
+import { NavBarOptionProps } from "./types";
 
 const levelOneIconStyle: string = 'w-6 h-auto'
 
-export const navbarOptions = [
+export const navbarOptions: NavBarOptionProps[] = [
   {
     icon: <FaHome className={levelOneIconStyle}/>,
     label: 'Início',

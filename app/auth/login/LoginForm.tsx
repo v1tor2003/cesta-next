@@ -30,6 +30,7 @@ export default function LoginForm() {
   const router = useRouter()
   const [loginError, setLoginError] = useState<string>('')
   const {handleSubmit, register, formState: {errors, isSubmitting}} = useForm<z.output<typeof LoginSchema>>({
+    mode: "onBlur",
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: '',
@@ -68,37 +69,33 @@ export default function LoginForm() {
             else router.push(entryPageUrl)
           })(e)
         }}>
-        <div className="flex flex-col gap-2 mb-2 items-center">
-          <div className="relative">
-            <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
-              <FaEnvelope className="text-gray-400"/>
+        <div className="flex flex-col space-y-2 mb-2 items-center">
+          <div className="flex items-center border bg-gray-300 border-gray-300 rounded-lg overflow-hidden shadow-sm">
+            <span className="px-2">
+              <FaEnvelope className="text-accb-green"/>
             </span>
             <input 
               {...register('email')}
               type="email" 
               placeholder="user@email.com"
-              aria-disabled={isSubmitting}
-              onChange={() => setLoginError('')}
-              className="block py-2 pl-8 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-blue-500" 
+              className="w-full py-2 px-3  focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
-            {errors.email && <p className="text-red-500 text-xs italic">{errors.email.message}</p>}
           </div>
-          <div className="relative">
-            <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
-              <FaLock className="text-gray-400"/>
+          {errors.email && <p className="text-red-600 text-xs italic transition-all">{errors.email.message}</p>}
+          <div className="flex items-center border bg-gray-300 border-gray-300 rounded-lg overflow-hidden shadow-sm">
+            <span className="px-2">
+              <FaLock className="text-accb-green"/>
             </span>
             <input 
               {...register('password')}
               type="password"
               placeholder="********"
-              aria-disabled={isSubmitting}
-              onChange={() => setLoginError('')}
-              className="block py-2 pl-8 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-blue-500" 
+              className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
               required
             />
-            {errors.password && <p className="text-red-500 text-xs italic">{errors.password.message}</p>}
           </div>
+          {errors.password && <p className="text-red-600 text-xs italic">{errors.password.message}</p>}
           <div className="flex justify-between">            
             <Link href="#" className="text-sm font-medium text-blue-500 hover:underline ">Esqueceu a senha?</Link>
           </div>

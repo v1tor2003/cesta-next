@@ -9,7 +9,7 @@ export default async function Users() {
       <BreadCrumb />
       <h1 className="ml-4 font-semibold text-2xl text-accb-green">Usuários:</h1>
       <div className="p-4 space-y-2 w-full lg:w-2/3 xl:w-2/4 ">
-        {users && users.map(user => <UserCard userInfo={user}/>)}
+        {users && users.map(user => <UserCard key={user.usuario_id} userInfo={user}/>)}
       </div>
     </section>
   )

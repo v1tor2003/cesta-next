@@ -1,15 +1,11 @@
 'use server'
-import { signIn } from "next-auth/react";
 import prisma from "../lib/prisma";
-import { LoginSchema, RegisterSchema } from "../lib/schemas"
+import { RegisterSchema } from "../lib/schemas"
 import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
+import { FormState } from "../lib/types";
 
-export type FormState = {
-  message: string;
-  fields?: Record<string, string>;
-  issues?: string[];
-}
+const serverErrorMsg: string = 'Erro interno do servidor. Por favor, tente mais tarde.'
 
 export async function signUp(prevState: FormState, data: FormData): Promise<FormState> {
   const formData = Object.fromEntries(data)
@@ -32,7 +28,7 @@ export async function signUp(prevState: FormState, data: FormData): Promise<Form
   if(await prisma.tabela_usuarios.findFirst({ where: {usuario_email: email}}))
     return {message: 'Erro ao criar conta. Verifique seus dados e tente de novo.'}
   const hashedPassword = bcrypt.hashSync(password, 8)
-  let user 
+  let user
   try {
     user = await prisma.tabela_usuarios.create({
       data: {
@@ -41,9 +37,9 @@ export async function signUp(prevState: FormState, data: FormData): Promise<Form
         usuario_senha: hashedPassword,
       },
     })
-    if(!user) return {message: 'Erro interno do servidor. Por favor, tente mais tarde.'}
+    if(!user) return {message: serverErrorMsg}
   } catch (error: unknown) {
-    return {message: 'Erro interno do servidor. Por favor, tente mais tarde.'}
+    return {message: serverErrorMsg}
   }
  
   redirect('/auth/login')

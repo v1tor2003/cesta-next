@@ -2,7 +2,7 @@ import { tabela_usuarios } from "@prisma/client"
 
 export type NavBarOptionProps = 
 {
-  icon: React.ReactNode
+  icon?: React.ReactNode 
   label: string
   url: string
   children?: NavBarOptionProps[]
@@ -30,3 +30,9 @@ export interface FormButtonProps
 }
 
 export type User = Omit<tabela_usuarios, "usuario_senha">
+
+export type FormState = {
+  message: string;
+  fields?: Record<string, string>;
+  issues?: string[];
+}

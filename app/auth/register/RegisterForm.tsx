@@ -18,6 +18,7 @@ export default function RegisterForm() {
   })
 
   const {handleSubmit, register, formState: {errors, isSubmitting}} = useForm<z.output<typeof RegisterSchema>>({
+    mode: "onBlur",
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
       email: '',
@@ -47,57 +48,57 @@ export default function RegisterForm() {
           })(e)
         }}>
           <div className="flex flex-col gap-2 mb-2 items-center">
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
-                <FaUser className="text-gray-400"/>
+            <div className="flex items-center border bg-gray-300 border-gray-300 rounded-lg overflow-hidden shadow-sm">
+              <span className="px-2">
+                <FaUser className="text-accb-green"/>
               </span>
               <input 
                 {...register('username')}
                 placeholder="user123"
-                className="block py-2 pl-8 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-blue-500" 
+                className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
                 required
               />
-              {errors.username && <p className="text-red-500 text-xs italic">{errors.username.message}</p>}
             </div>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
-                <FaEnvelope className="text-gray-400"/>
+            {errors.username && <p className="text-red-500 text-xs italic">{errors.username.message}</p>}
+            <div className="flex items-center border bg-gray-300 border-gray-300 rounded-lg overflow-hidden shadow-sm">
+              <span className="px-2">
+                <FaEnvelope className="text-accb-green"/>
               </span>
               <input 
                 {...register('email')}
                 type="email"
                 placeholder="user@email.com"
-                className="block py-2 pl-8 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-blue-500" 
+                className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
                 required
               />
-               {errors.email && <p className="text-red-500 text-xs italic">{errors.email.message}</p>}
             </div>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
-                <FaLock className="text-gray-400"/>
+            {errors.email && <p className="text-red-500 text-xs italic">{errors.email.message}</p>}
+            <div className="flex items-center border bg-gray-300 border-gray-300 rounded-lg overflow-hidden shadow-sm">
+              <span className="px-2">
+                <FaLock className="text-accb-green"/>
               </span>
               <input 
                 {...register('password')}
                 type="password"
                 placeholder="********"
-                className="block py-2 pl-8 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-blue-500" 
+                className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
                 required
               />
-               {errors.password && <p className="text-red-500 text-xs italic">{errors.password.message}</p>}
             </div>
-            <div className="relative mb-2">
-              <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
-                <FaCheckCircle className="text-gray-400"/>
+            {errors.password && <p className="text-red-500 text-xs italic">{errors.password.message}</p>}
+            <div className="flex items-center border bg-gray-300 border-gray-300 rounded-lg overflow-hidden shadow-sm mb-2">
+              <span className="px-2">
+                <FaCheckCircle className="text-accb-green"/>
               </span>
               <input 
                 {...register('confirmPassword')}
                 type="password"
                 placeholder="********"
-                className="block py-2 pl-8 pr-4 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-blue-500"
+                className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
-               {errors.confirmPassword && <p className="text-red-500 text-xs italic">{errors.confirmPassword.message}</p>}
             </div>
+            {errors.confirmPassword && <p className="text-red-500 text-xs italic">{errors.confirmPassword.message}</p>}
             <SubmitForm buttonLabel="Criar" pending={isSubmitting} className="w-full text-white p-2 rounded-md bg-accb-green"/>
             <p className="text-sm font-light text-accb-green">
               Já possui conta?

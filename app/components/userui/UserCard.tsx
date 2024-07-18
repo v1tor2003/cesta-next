@@ -1,8 +1,9 @@
 'use client'
-import { FaPen, FaTrash, FaXmark } from "react-icons/fa6";
+import { FaPen, FaTrash } from "react-icons/fa6";
 import { User } from "../../lib/types";
 import Modal from "../layout/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import EditUserForm from "../forms/EditUserForm";
 
 interface UserCardProps {
   userInfo: User
@@ -13,12 +14,19 @@ export default function UserCard({userInfo}: UserCardProps) {
   const openModal = () => setIsVisible(true)
   const closeModal = () => setIsVisible(false)
 
+  useEffect(() => {
+    if (isVisible) document.body.classList.add('no-scroll');
+    else document.body.classList.remove('no-scroll');
+    
+    return () => document.body.classList.remove('no-scroll');
+  }, [isVisible]);
+
   return (
     <>
       <Modal title="Editar Usuário" isVisible={isVisible} onClose={closeModal}>
-        <p className="mb-4">user id is: {userInfo.usuario_id}</p>
+        <EditUserForm defaultData={userInfo}/>
       </Modal>
-      <div className="flex p-2 justify-between shadow-md rounded-md bg-slate-200 w-full">
+      <div className="flex p-2 justify-between shadow-md rounded-md hover:bg-slate-300 bg-slate-200 w-full">
         <div className="flex justify-start space-x-2">
           <span className="flex rounded-full w-16 h-16 text-center text-2xl justify-center items-center bg-accb-green text-white capitalize">
           {userInfo.usuario_nome.charAt(0)}

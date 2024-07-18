@@ -10,12 +10,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const screenMd: number = 768
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < screenMd)
+  const [isMobile, setIsMobile] = useState<boolean>(false)
   const [showToggle, setShowToggle] = useState<boolean>(false)
   const [isNavOpen, setIsNavOpen] = useState<boolean>(false)
 
   const toggleNav = () => setIsNavOpen(!isNavOpen)
   const closeNav = () => {if (window.innerWidth > screenMd) setIsNavOpen(false)}
+  
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < screenMd)
