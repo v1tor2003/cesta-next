@@ -1,6 +1,5 @@
 'use client'
 import SubmitForm from "@/app/components/forms/SubmitForm";
-import Link from "next/link";
 
 import { useFormState } from "react-dom";
 import { FaCheckCircle } from "react-icons/fa";
@@ -11,8 +10,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRef } from "react";
+import ErrorMessage from "@/app/components/forms/ErrorMessage";
+import Input from "@/app/components/forms/Input";
+import LoginAccountLink from "@/app/components/authui/LoginAccountLink";
 
-export default function RegisterForm() {
+export default function RegisterForm(): JSX.Element {
   const [state, formAction] = useFormState(signUp, {
     message: ''
   })
@@ -32,13 +34,8 @@ export default function RegisterForm() {
   
   return (
     <div>
-      {state.message !== '' && 
-        <div className="bg-red-100 rounded-md mb-2 mx-6">
-          <p className="p-2 text-red-600 text-xs italic">{state.message}</p>
-        </div> 
-      }
       <form 
-        className="flex flex-col items-center"
+        className="flex flex-col gap-2 mb-2 items-center"
         ref={formRef} 
         action={formAction}
         onSubmit={(e) => {
@@ -47,65 +44,56 @@ export default function RegisterForm() {
             formAction(new FormData(formRef.current!))
           })(e)
         }}>
-          <div className="flex flex-col gap-2 mb-2 items-center">
-            <div className="flex items-center border bg-gray-300 border-gray-300 rounded-lg overflow-hidden shadow-sm">
-              <span className="px-2">
-                <FaUser className="text-accb-green"/>
-              </span>
-              <input 
-                {...register('username')}
-                placeholder="user123"
-                className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                required
-              />
-            </div>
-            {errors.username && <p className="text-red-500 text-xs italic">{errors.username.message}</p>}
-            <div className="flex items-center border bg-gray-300 border-gray-300 rounded-lg overflow-hidden shadow-sm">
-              <span className="px-2">
-                <FaEnvelope className="text-accb-green"/>
-              </span>
-              <input 
-                {...register('email')}
-                type="email"
-                placeholder="user@email.com"
-                className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                required
-              />
-            </div>
-            {errors.email && <p className="text-red-500 text-xs italic">{errors.email.message}</p>}
-            <div className="flex items-center border bg-gray-300 border-gray-300 rounded-lg overflow-hidden shadow-sm">
-              <span className="px-2">
-                <FaLock className="text-accb-green"/>
-              </span>
-              <input 
-                {...register('password')}
-                type="password"
-                placeholder="********"
-                className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                required
-              />
-            </div>
-            {errors.password && <p className="text-red-500 text-xs italic">{errors.password.message}</p>}
-            <div className="flex items-center border bg-gray-300 border-gray-300 rounded-lg overflow-hidden shadow-sm mb-2">
-              <span className="px-2">
-                <FaCheckCircle className="text-accb-green"/>
-              </span>
-              <input 
-                {...register('confirmPassword')}
-                type="password"
-                placeholder="********"
-                className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-            {errors.confirmPassword && <p className="text-red-500 text-xs italic">{errors.confirmPassword.message}</p>}
-            <SubmitForm buttonLabel="Criar" pending={isSubmitting} className="w-full text-white p-2 rounded-md bg-accb-green"/>
-            <p className="text-sm font-light text-accb-green">
-              Já possui conta?
-              <Link href="/auth/login" className="font-medium text-blue-500 hover:underline "> Entrar
-              </Link>
-            </p>
-          </div>
+          <ErrorMessage hasError={state.message !== ''} message={state.message}/>
+          <Input icon={<FaUser className="text-accb-green"/>}>
+            <input 
+              {...register('username')}
+              placeholder="user123"
+              aria-disabled={isSubmitting}
+              className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+              required
+            />
+          </Input>
+          <ErrorMessage hasError={errors.username !== undefined} message={errors.username?.message}/>
+          <Input icon={<FaEnvelope className="text-accb-green"/>}>
+            <input 
+              {...register('email')}
+              type="email"
+              placeholder="user@email.com"
+              aria-disabled={isSubmitting}
+              className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+              required
+            />
+          </Input>
+          <ErrorMessage hasError={errors.email !== undefined} message={errors.email?.message}/>
+          <Input icon={<FaLock className="text-accb-green"/>}>
+            <input 
+              {...register('password')}
+              type="password"
+              placeholder="********"
+              aria-disabled={isSubmitting}
+              className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+              required
+            />
+          </Input>
+          <ErrorMessage hasError={errors.password !== undefined} message={errors.password?.message}/>
+          <Input icon={<FaCheckCircle className="text-accb-green"/>}>
+            <input 
+              {...register('confirmPassword')}
+              type="password"
+              placeholder="********"
+              aria-disabled={isSubmitting}
+              className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </Input>
+          <ErrorMessage hasError={errors.confirmPassword !== undefined} message={errors.confirmPassword?.message}/>
+          <SubmitForm 
+            buttonLabel="Criar" 
+            pending={isSubmitting} 
+            className="w-full text-white p-2 rounded-md bg-accb-green"
+          />
+          <LoginAccountLink />
         </form>
       </div>
   )

@@ -22,6 +22,7 @@ export default function EditUserForm({defaultData}: EditUserFormProps): JSX.Elem
   })
 
   const { register, formState: {errors, isSubmitting}} = useForm<z.output<typeof EditUserSchema>>({
+    mode: 'onBlur',
     resolver: zodResolver(EditUserSchema),
     defaultValues: {
       email: defaultData?.usuario_email,
@@ -39,7 +40,7 @@ export default function EditUserForm({defaultData}: EditUserFormProps): JSX.Elem
         </div> 
       }
       <form
-        className="flex flex-col space-y-2 items-center"
+        className="flex flex-col space-y-2"
         ref={formRef} 
         action={formAction}
         onSubmit={(e) => {
