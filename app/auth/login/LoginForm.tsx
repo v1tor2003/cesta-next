@@ -14,6 +14,7 @@ import ErrorMessage from "@/app/components/forms/ErrorMessage";
 import Input from "@/app/components/forms/Input";
 import CreateAccountLink from "@/app/components/authui/CreateAccountLink";
 import ForgotPasswordLink from "@/app/components/authui/ForgotPasswordLink";
+import Button from "@/app/components/layout/Button";
 
 function handleLoginError(errorCode: string): string {
   switch (errorCode) {
@@ -94,11 +95,17 @@ export default function LoginForm(): JSX.Element {
           </Input>
           <ErrorMessage hasError={errors.password !== undefined} message={errors.password?.message}/>
           <ForgotPasswordLink />
-          <SubmitForm 
-            buttonLabel="Entrar" 
-            pending={isSubmitting} 
-            className="w-full text-white p-2 rounded-md bg-accb-green"
-          />
+          <SubmitForm pending={isSubmitting}>
+            <Button 
+              className="w-full p-2 rounded-md border font-semibold" 
+              colors={{
+                default: "accb-green",
+                hover: "white"
+              }}
+              buttonType="submit"
+              buttonLabel="Entrar"       
+            />
+          </SubmitForm>
           <CreateAccountLink />
       </form>
     </div>

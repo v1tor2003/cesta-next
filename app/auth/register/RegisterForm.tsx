@@ -13,6 +13,7 @@ import { useRef } from "react";
 import ErrorMessage from "@/app/components/forms/ErrorMessage";
 import Input from "@/app/components/forms/Input";
 import LoginAccountLink from "@/app/components/authui/LoginAccountLink";
+import Button from "@/app/components/layout/Button";
 
 export default function RegisterForm(): JSX.Element {
   const [state, formAction] = useFormState(signUp, {
@@ -88,11 +89,17 @@ export default function RegisterForm(): JSX.Element {
             />
           </Input>
           <ErrorMessage hasError={errors.confirmPassword !== undefined} message={errors.confirmPassword?.message}/>
-          <SubmitForm 
-            buttonLabel="Criar" 
-            pending={isSubmitting} 
-            className="w-full text-white p-2 rounded-md bg-accb-green"
-          />
+          <SubmitForm pending={isSubmitting}>
+            <Button 
+              className="w-full p-2 rounded-md border font-semibold" 
+              colors={{
+                default: "accb-green",
+                hover: "white"
+              }}
+              buttonType="submit"
+              buttonLabel="Criar"       
+            />
+          </SubmitForm>
           <LoginAccountLink />
         </form>
       </div>

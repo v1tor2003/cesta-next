@@ -19,9 +19,7 @@ const handler = NextAuth({
           email: string,
           password: string
         }
-
-        console.log(email, password)
-
+        
         const res = await prisma.tabela_usuarios.findFirst({
           where:{
             usuario_email: email
