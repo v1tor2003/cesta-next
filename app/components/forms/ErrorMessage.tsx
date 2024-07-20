@@ -6,6 +6,7 @@ interface InputErrorMessageProps {
 }
 
 export default function InputErrorMessage({hasError, message}: InputErrorMessageProps): JSX.Element {
+  console.log(hasError)
   if(!hasError) return <></>
 
   return (

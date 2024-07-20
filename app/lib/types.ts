@@ -22,17 +22,11 @@ export interface HeaderProps
   toggleNav: () => void
 }
 
-export interface FormButtonProps 
-{
-  pending: boolean
-  buttonLabel: string
-  className: string | undefined
-}
-
 export type User = Omit<tabela_usuarios, "usuario_senha">
 
 export type FormState = {
-  message: string;
-  fields?: Record<string, string>;
-  issues?: string[];
+  success?: boolean
+  message: string
+  fields?: Record<string, string>
+  issues?: string[]
 }

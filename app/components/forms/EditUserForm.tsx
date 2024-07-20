@@ -9,13 +9,18 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { EditUserSchema } from "@/app/lib/schemas"
 import { useFormState } from "react-dom"
 import { editUser } from "@/app/dashboard/cadastros/gerenciamento/usuarios/actions"
+import Input from "./Input"
+import ErrorMessage from "./ErrorMessage"
+import InputLabel from "./InputLabel"
+import Button from "../layout/Button"
+import SucessMessage from "./SucessMessage"
 
 interface EditUserFormProps {
   defaultData?: User
 }
 
 export default function EditUserForm({defaultData}: EditUserFormProps): JSX.Element {
-  const inputStyle: string = "block p-2 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-blue-500 "
+  const inputStyle: string = "w-full p-2 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-blue-500 "
 
   const [state, formAction] = useFormState(editUser, {
     message: ''
@@ -34,11 +39,6 @@ export default function EditUserForm({defaultData}: EditUserFormProps): JSX.Elem
 
   return (
     <div>
-      {state.message !== '' && 
-        <div className="bg-red-100 rounded-md mb-2 mx-6">
-          <p className="p-2 text-red-600 text-xs italic">{state.message}</p>
-        </div> 
-      }
       <form
         className="flex flex-col space-y-2"
         ref={formRef} 
@@ -51,14 +51,18 @@ export default function EditUserForm({defaultData}: EditUserFormProps): JSX.Elem
           form.append('user_id', user_id)
           formAction(form)
         }}>
-        <div className="w-full">
-          <label htmlFor="" className="block mb-2 text-sm font-medium text-gray-700">Id:</label>
-          <p className={inputStyle + 'bg-gray-200'}> 
-            {defaultData?.usuario_id} 
-          </p>
-        </div>
-        <div>
-          <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">Email:</label>
+        {state.success && <SucessMessage message={state.message} />}
+        <ErrorMessage hasError={state.success == false} message={state.message}/>
+        <InputLabel label="id"/>
+        <Input>
+          <div className="w-full">
+            <p className={inputStyle + 'bg-gray-200'}> 
+              {defaultData?.usuario_id} 
+            </p>
+          </div>
+        </Input>
+        <InputLabel label="email"/>
+        <Input >
           <input 
             {...register('email')}
             type="email"
@@ -67,10 +71,10 @@ export default function EditUserForm({defaultData}: EditUserFormProps): JSX.Elem
             className={inputStyle}
             required
           />
-        </div>
-        {errors.email && <p className="text-red-600 text-xs italic">{errors.email.message}</p>}
-        <div>
-          <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-700">Nome:</label>
+        </Input>
+        <ErrorMessage hasError={errors.email !== undefined} message={errors.email?.message}/>
+        <InputLabel label="nome"/>
+        <Input>
           <input 
             {...register('name')}
             type="text"
@@ -79,13 +83,19 @@ export default function EditUserForm({defaultData}: EditUserFormProps): JSX.Elem
             className={inputStyle}
             required
           />
-        </div>
-        {errors.name && <p className="text-red-600 text-xs italic">{errors.name.message}</p>}
-        <SubmitForm 
-          buttonLabel="Editar" 
-          pending={isSubmitting} 
-          className="w-full text-white p-2 rounded-md bg-accb-green"
-        />
+        </Input>
+        <ErrorMessage hasError={errors.name !== undefined} message={errors.name?.message}/>
+        <SubmitForm pending={isSubmitting}>
+          <Button 
+            className="w-full p-2 rounded-md border font-semibold" 
+            colors={{
+              default: "accb-green",
+              hover: "white"
+            }}
+            buttonType="submit"
+            buttonLabel="Editar"       
+          />
+        </SubmitForm>
       </form>
     </div>
   )

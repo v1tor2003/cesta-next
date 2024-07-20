@@ -1,7 +1,11 @@
-import { FormButtonProps } from "../../lib/types"
+interface SubmitFormProps {
+  children: React.ReactNode
+  className?: string
+  pending: boolean
+}
 
-export default function SubmitForm({pending,buttonLabel, className}: FormButtonProps) {  
+export default function SubmitForm({children}: SubmitFormProps) {  
   return (
-    <button type="submit" aria-disabled={pending} className={className + ' ' + `${pending ? 'bg-gray-400' : ''}`}>{buttonLabel}</button>
+    <>{children}</>
   )
 }

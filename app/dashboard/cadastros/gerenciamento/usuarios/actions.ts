@@ -61,5 +61,5 @@ export async function editUser(prevState: FormState, data: FormData): Promise<Fo
     return {message: serverErrorMsg}
   }
 
-  return {message: ''}
+  return {message: 'Usuário atualizado com sucesso.', success: true}
 }

@@ -11,8 +11,6 @@ interface UserCardProps {
 
 export default function UserCard({userInfo}: UserCardProps) {
   const [isVisible, setIsVisible] = useState<boolean>(false)
-  const openModal = () => setIsVisible(true)
-  const closeModal = () => setIsVisible(false)
 
   useEffect(() => {
     if (isVisible) document.body.classList.add('no-scroll');
@@ -23,7 +21,7 @@ export default function UserCard({userInfo}: UserCardProps) {
 
   return (
     <>
-      <Modal title="Editar Usuário" isVisible={isVisible} onClose={closeModal}>
+      <Modal title="Editar Usuário" isVisible={isVisible} onClose={() => setIsVisible(false)}>
         <EditUserForm defaultData={userInfo}/>
       </Modal>
       <div className="flex p-2 justify-between shadow-md rounded-md hover:bg-slate-300 bg-slate-200 w-full">
@@ -37,7 +35,7 @@ export default function UserCard({userInfo}: UserCardProps) {
           </div>
         </div>
         <div className="flex cursor-pointer items-center space-x-2">
-          <div onClick={openModal} className="text-accb-green hover:text-cyan-600 transition-all"><FaPen /></div>
+          <div onClick={() => setIsVisible(true)} className="text-accb-green hover:text-cyan-600 transition-all"><FaPen /></div>
           <div className="text-accb-green hover:text-red-600 transition-all"><FaTrash /></div>
         </div>
       </div>
