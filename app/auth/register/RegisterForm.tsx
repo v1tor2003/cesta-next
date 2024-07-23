@@ -41,55 +41,47 @@ export default function RegisterForm(): JSX.Element {
         action={formAction}
         onSubmit={(e) => {
           e.preventDefault()
-          handleSubmit(() => {
+          handleSubmit(async () => {
             formAction(new FormData(formRef.current!))
           })(e)
         }}>
           <ErrorMessage hasError={state.message !== ''} message={state.message}/>
-          <Input icon={<FaUser className="text-accb-green"/>}>
-            <input 
-              {...register('username')}
-              placeholder="user123"
-              aria-disabled={isSubmitting}
-              className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-              required
-            />
-          </Input>
+          <Input 
+            icon={<FaUser className="text-accb-green"/>}
+            {...register('username')}
+            placeholder="user123"
+            className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+            required
+          />
           <ErrorMessage hasError={errors.username !== undefined} message={errors.username?.message}/>
-          <Input icon={<FaEnvelope className="text-accb-green"/>}>
-            <input 
-              {...register('email')}
-              type="email"
-              placeholder="user@email.com"
-              aria-disabled={isSubmitting}
-              className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-              required
-            />
-          </Input>
+          <Input 
+            icon={<FaEnvelope className="text-accb-green"/>}
+            {...register('email')}
+            type="email"
+            placeholder="user@email.com"
+            className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+            required
+          />
           <ErrorMessage hasError={errors.email !== undefined} message={errors.email?.message}/>
-          <Input icon={<FaLock className="text-accb-green"/>}>
-            <input 
-              {...register('password')}
-              type="password"
-              placeholder="********"
-              aria-disabled={isSubmitting}
-              className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-              required
-            />
-          </Input>
+          <Input 
+            icon={<FaLock className="text-accb-green"/>}
+            {...register('password')}
+            type="password"
+            placeholder="********"
+            className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+            required
+          />
           <ErrorMessage hasError={errors.password !== undefined} message={errors.password?.message}/>
-          <Input icon={<FaCheckCircle className="text-accb-green"/>}>
-            <input 
-              {...register('confirmPassword')}
-              type="password"
-              placeholder="********"
-              aria-disabled={isSubmitting}
-              className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </Input>
+          <Input 
+            icon={<FaCheckCircle className="text-accb-green"/>}
+            {...register('confirmPassword')}
+            type="password"
+            placeholder="********"
+            className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
           <ErrorMessage hasError={errors.confirmPassword !== undefined} message={errors.confirmPassword?.message}/>
-          <SubmitForm pending={isSubmitting}>
+          <SubmitForm >
             <Button 
               className="w-full p-2 rounded-md border font-semibold" 
               colors={{

@@ -72,30 +72,27 @@ export default function LoginForm(): JSX.Element {
         ref={formRef} 
         onSubmit={(e) => login(e)}>
           <ErrorMessage hasError={loginError !== ''} message={loginError}/>
-          <Input icon={<FaEnvelope className="text-accb-green"/>}>
-              <input 
-                {...register('email')}
-                type="email" 
-                placeholder="user@email.com"
-                aria-disabled={isSubmitting}
-                className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-          </Input>
+          <Input 
+            icon={<FaEnvelope className="text-accb-green"/>}
+            {...register('email')}
+            type="email" 
+            placeholder="user@email.com"
+            className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
           <ErrorMessage hasError={errors.email !== undefined} message={errors.email?.message}/>
-          <Input icon={<FaLock className="text-accb-green"/>}>
-              <input 
-                {...register('password')}
-                type="password"
-                placeholder="********"
-                aria-disabled={isSubmitting}
-                className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                required
-              />
-          </Input>
+          <Input 
+            icon={<FaLock className="text-accb-green"/>}
+            {...register('password')}
+            type="password"
+            placeholder="********"
+            aria-disabled={isSubmitting}
+            className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+            required
+          />
           <ErrorMessage hasError={errors.password !== undefined} message={errors.password?.message}/>
           <ForgotPasswordLink />
-          <SubmitForm pending={isSubmitting}>
+          <SubmitForm>
             <Button 
               className="w-full p-2 rounded-md border font-semibold" 
               colors={{

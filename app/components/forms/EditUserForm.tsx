@@ -1,91 +1,76 @@
 'use client'
-import SubmitForm from "./SubmitForm"
-
-import { User } from "@/app/lib/types"
-import { useRef } from "react"
+import { FormState, User } from "@/app/lib/types"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod" 
 import { EditUserSchema } from "@/app/lib/schemas"
-import { useFormState } from "react-dom"
+import { useFormState, useFormStatus } from "react-dom"
 import { editUser } from "@/app/dashboard/cadastros/gerenciamento/usuarios/actions"
 import Input from "./Input"
 import ErrorMessage from "./ErrorMessage"
 import InputLabel from "./InputLabel"
 import Button from "../layout/Button"
 import SucessMessage from "./SucessMessage"
+import SubmitForm from "./SubmitForm"
 
 interface EditUserFormProps {
   defaultData?: User
 }
 
+const initialState: FormState = { message: '' }
+
 export default function EditUserForm({defaultData}: EditUserFormProps): JSX.Element {
-  const inputStyle: string = "w-full p-2 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-blue-500 "
+  const baseInputStyle: string = "w-full p-2 text-gray-900 border border-gray-300 rounded-md focus:outline-none"
+  const inputStyle: string = baseInputStyle + " focus:border-blue-500 focus:ring-blue-500"
+  const disabledInputStyle: string = baseInputStyle + " bg-gray-200"
 
-  const [state, formAction] = useFormState(editUser, {
-    message: ''
-  })
-
-  const { register, formState: {errors, isSubmitting}} = useForm<z.output<typeof EditUserSchema>>({
+  const [state, formAction] = useFormState(editUser, initialState)
+  
+  const { register, formState: { errors }} = useForm<z.output<typeof EditUserSchema>>({
     mode: 'onBlur',
     resolver: zodResolver(EditUserSchema),
     defaultValues: {
+      user_id: defaultData?.usuario_id || 0,
       email: defaultData?.usuario_email,
       name: defaultData?.usuario_nome
     }
   })
 
-  const formRef = useRef<HTMLFormElement>(null)
-
   return (
     <div>
       <form
         className="flex flex-col space-y-2"
-        ref={formRef} 
         action={formAction}
-        onSubmit={(e) => {
-          e.preventDefault()
-          
-          const form = new FormData(formRef.current!)
-          const user_id = defaultData?.usuario_id ? defaultData.usuario_id.toString() : ''
-          form.append('user_id', user_id)
-          formAction(form)
-        }}>
+      >
         {state.success && <SucessMessage message={state.message} />}
         <ErrorMessage hasError={state.success == false} message={state.message}/>
         <InputLabel label="id"/>
-        <Input>
-          <div className="w-full">
-            <p className={inputStyle + 'bg-gray-200'}> 
-              {defaultData?.usuario_id} 
-            </p>
-          </div>
-        </Input>
+        <Input 
+          {...register('user_id')}
+          type="number"
+          className={disabledInputStyle}
+          required
+          readOnly
+        />
         <InputLabel label="email"/>
-        <Input >
-          <input 
-            {...register('email')}
-            type="email"
-            placeholder="user@email.com"
-            aria-disabled={isSubmitting}
-            className={inputStyle}
-            required
-          />
-        </Input>
+        <Input 
+          {...register('email')}
+          type="email"
+          placeholder="user@email.com" 
+          className={inputStyle}
+          required
+        />
         <ErrorMessage hasError={errors.email !== undefined} message={errors.email?.message}/>
         <InputLabel label="nome"/>
-        <Input>
-          <input 
-            {...register('name')}
-            type="text"
-            placeholder="Joao Silva"
-            aria-disabled={isSubmitting}
-            className={inputStyle}
-            required
-          />
-        </Input>
+        <Input
+          {...register('name')}
+          type="text"
+          placeholder="Joao Silva"
+          className={inputStyle}
+          required
+        />
         <ErrorMessage hasError={errors.name !== undefined} message={errors.name?.message}/>
-        <SubmitForm pending={isSubmitting}>
+        <SubmitForm >
           <Button 
             className="w-full p-2 rounded-md border font-semibold" 
             colors={{

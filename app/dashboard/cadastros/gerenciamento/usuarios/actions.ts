@@ -2,6 +2,7 @@
 import prisma from "@/app/lib/prisma";
 import { EditUserSchema } from "@/app/lib/schemas";
 import { FormState, User } from "@/app/lib/types";
+import { revalidatePath } from "next/cache";
 
 const serverErrorMsg: string = 'Erro interno do servidor. Por favor, tente mais tarde.'
 
@@ -18,6 +19,8 @@ export async function getUsers(): Promise<User[]> {
 }
 
 export async function editUser(prevState: FormState, data: FormData): Promise<FormState> {
+  await new Promise(resolve => setTimeout(resolve, 2000))
+  console.log(data)
   const formData = Object.fromEntries(data)
   const parsed = EditUserSchema.safeParse(formData)
 
@@ -27,28 +30,18 @@ export async function editUser(prevState: FormState, data: FormData): Promise<Fo
       fields[key] = formData[key].toString()
 
     return {
-      message: '',
+      message: 'Erro ao validar campos.',
       fields,
       issues: parsed.error.issues.map((issue) => issue.message)
     }
   }
   
-  const {user_id, email, name} = parsed.data
-  let id: number
+  const { user_id, email, name } = parsed.data
   
-  try{ id = Number.parseInt(user_id) } 
-  catch (error: unknown) {
-    return {message: serverErrorMsg}
-  }
-
-  // should consider testing the email as well
-  if(!await prisma.tabela_usuarios.findUnique({ where: {usuario_id: id}}))
-    return {message: 'Erro ao encontrar usuário. Por favor, tente mais tarde.'}
-
   try {
     const res = await prisma.tabela_usuarios.update({
       where: {
-        usuario_id: id
+        usuario_id: user_id
       },
       data: {
         usuario_email: email,
@@ -56,10 +49,11 @@ export async function editUser(prevState: FormState, data: FormData): Promise<Fo
       }
     })
 
-    if(!res) return {message: serverErrorMsg}
+    if(!res) return {message: 'Erro ao atualizar usuário. Por favor, tente mais tarde.'}
   } catch (error: unknown) {
     return {message: serverErrorMsg}
   }
 
+  revalidatePath('/')
   return {message: 'Usuário atualizado com sucesso.', success: true}
 }

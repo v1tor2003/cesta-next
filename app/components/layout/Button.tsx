@@ -10,7 +10,7 @@ interface ButtonProps{
 
 export default function Button({className, colors, buttonType, buttonLabel} : ButtonProps): JSX.Element {
   const style = className + ` text-${colors.hover} bg-${colors.default} border-${colors.default} hover:text-${colors.default} hover:border-${colors.default} hover:bg-${colors.hover} transition-colors`
-  
+
   return (
     <button 
       type={buttonType} 
