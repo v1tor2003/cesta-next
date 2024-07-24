@@ -12,12 +12,13 @@ import InputLabel from "./InputLabel"
 import Button from "../layout/Button"
 import SucessMessage from "./SucessMessage"
 import SubmitForm from "./SubmitForm"
+import { useEffect, useRef } from "react"
 
 interface EditUserFormProps {
   defaultData?: User
 }
 
-const initialState: FormState = { message: '' }
+const initialState: FormState = { result: undefined }
 
 export default function EditUserForm({defaultData}: EditUserFormProps): JSX.Element {
   const baseInputStyle: string = "w-full p-2 text-gray-900 border border-gray-300 rounded-md focus:outline-none"
@@ -36,14 +37,22 @@ export default function EditUserForm({defaultData}: EditUserFormProps): JSX.Elem
     }
   })
 
+  const formRef = useRef<HTMLFormElement>(null)
+
+  useEffect(() => {
+    if(state.result === 'success')
+      formRef.current?.reset()
+  }, [state])
+
   return (
     <div>
       <form
         className="flex flex-col space-y-2"
+        ref={formRef}
         action={formAction}
       >
-        {state.success && <SucessMessage message={state.message} />}
-        <ErrorMessage hasError={state.success == false} message={state.message}/>
+        {state.result === 'success' && <SucessMessage message={state.message || ''} />}
+        <ErrorMessage hasError={state.result === 'failure'} message={state.message}/>
         <InputLabel label="id"/>
         <Input 
           {...register('user_id')}
@@ -72,13 +81,9 @@ export default function EditUserForm({defaultData}: EditUserFormProps): JSX.Elem
         <ErrorMessage hasError={errors.name !== undefined} message={errors.name?.message}/>
         <SubmitForm >
           <Button 
-            className="w-full p-2 rounded-md border font-semibold" 
-            colors={{
-              default: "accb-green",
-              hover: "white"
-            }}
-            buttonType="submit"
-            buttonLabel="Editar"       
+            className="w-full py-2 px-3 rounded-md border font-semibold text-white bg-accb-green border-accb-green hover:text-accb-green hover:border-accb-green hover:bg-white transition-colors" 
+            type="submit"
+            buttonlabel="Criar"       
           />
         </SubmitForm>
       </form>

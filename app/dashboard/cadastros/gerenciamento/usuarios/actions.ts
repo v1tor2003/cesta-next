@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 
 const serverErrorMsg: string = 'Erro interno do servidor. Por favor, tente mais tarde.'
 
+// should use prisma select to omit the usuario_senha field
 export async function getUsers(): Promise<User[]> {
   let users: User[] = new Array()
   try {
@@ -30,6 +31,7 @@ export async function editUser(prevState: FormState, data: FormData): Promise<Fo
       fields[key] = formData[key].toString()
 
     return {
+      result: 'failure',
       message: 'Erro ao validar campos.',
       fields,
       issues: parsed.error.issues.map((issue) => issue.message)
@@ -49,11 +51,18 @@ export async function editUser(prevState: FormState, data: FormData): Promise<Fo
       }
     })
 
-    if(!res) return {message: 'Erro ao atualizar usuário. Por favor, tente mais tarde.'}
+    if(!res) 
+      return {
+        result: 'failure',
+        message: 'Erro ao atualizar usuário. Por favor, tente mais tarde.'
+      }
   } catch (error: unknown) {
-    return {message: serverErrorMsg}
+    return {
+      result: 'failure',
+      message: serverErrorMsg
+    }
   }
 
   revalidatePath('/')
-  return {message: 'Usuário atualizado com sucesso.', success: true}
+  return { result: 'success', message: 'Usuário atualizado com sucesso.' }
 }

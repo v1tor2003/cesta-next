@@ -1,21 +1,25 @@
-interface ButtonProps{
-  className: string
-  colors: {
-    default: string,
-    hover: string
-  }
-  buttonType: "submit" | "reset" | "button" | undefined
-  buttonLabel: string
+import React, { ForwardedRef, forwardRef } from 'react'
+interface ButtonProps 
+extends React.ButtonHTMLAttributes<HTMLButtonElement>{
+  buttonlabel: string
 }
 
-export default function Button({className, colors, buttonType, buttonLabel} : ButtonProps): JSX.Element {
-  const style = className + ` text-${colors.hover} bg-${colors.default} border-${colors.default} hover:text-${colors.default} hover:border-${colors.default} hover:bg-${colors.hover} transition-colors`
-
+function FButton(props: ButtonProps, ref: ForwardedRef<HTMLButtonElement>): JSX.Element {
+  const { buttonlabel, type } = props
+  
   return (
     <button 
-      type={buttonType} 
-      className={style}>
-        {buttonLabel}
+      type={type}
+      ref={ref}
+      {...props}
+    >
+      {buttonlabel}
     </button>
   )
 }
+
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(FButton)
+
+Button.displayName = "button"
+
+export default Button

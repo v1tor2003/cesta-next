@@ -24,9 +24,16 @@ export interface HeaderProps
 
 export type User = Omit<tabela_usuarios, "usuario_senha">
 
-export type FormState = {
+/*export type FormState = {
   success?: boolean
   message: string
+  fields?: Record<string, string>
+  issues?: string[]
+}*/
+
+export type FormState = {
+  result: 'success' | 'failure' | undefined
+  message?: string
   fields?: Record<string, string>
   issues?: string[]
 }

@@ -5,13 +5,13 @@ import { Oval } from "react-loader-spinner"
 interface SubmitFormProps {
   children: React.ReactNode
   className?: string
-  
+  submiting?: boolean
 }
 
-export default function SubmitForm({ children}: SubmitFormProps) {  
+export default function SubmitForm({submiting, children}: SubmitFormProps) {  
   const { pending } = useFormStatus()
   
-  return pending ? 
+  return pending || submiting ? 
     (<div className="w-full flex items-center justify-center p-2 rounded-md border border-accb-green">
       <Oval
         visible={true}

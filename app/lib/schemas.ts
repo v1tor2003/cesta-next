@@ -16,7 +16,7 @@ export const RegisterSchema = z.object({
 
 export const LoginSchema = z.object({
   email: z.string().trim().email({message: 'Informe um endereço de email válido.'}),
-  password: z.string().trim().min(4, {message: 'Informe uma senha válida.'}),
+  password: z.string().trim().min(4, {message: 'Informe uma senha com mais de 4 caracteres.'}),
 })
 
 export const EditUserSchema = z.object({

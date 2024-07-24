@@ -17,7 +17,8 @@ export async function signUp(prevState: FormState, data: FormData): Promise<Form
       fields[key] = formData[key].toString()
 
     return {
-      message: '',
+      result: 'failure',
+      message: 'Erro ao validar campos.',
       fields,
       issues: parsed.error.issues.map((issue) => issue.message)
     }
@@ -26,7 +27,10 @@ export async function signUp(prevState: FormState, data: FormData): Promise<Form
   const {username, email, password} = parsed.data
   // should refactor to findUnique(), gotta update db schema fisrt
   if(await prisma.tabela_usuarios.findFirst({ where: {usuario_email: email}}))
-    return {message: 'Erro ao criar conta. Verifique seus dados e tente de novo.'}
+    return {
+      result: 'failure',
+      message: 'Erro ao criar conta. Verifique seus dados e tente de novo.'
+    }
   const hashedPassword = bcrypt.hashSync(password, 8)
   let user
   try {
@@ -37,9 +41,16 @@ export async function signUp(prevState: FormState, data: FormData): Promise<Form
         usuario_senha: hashedPassword,
       },
     })
-    if(!user) return {message: serverErrorMsg}
+    if(!user) 
+      return {
+        result: 'failure',
+        message: serverErrorMsg
+      }
   } catch (error: unknown) {
-    return {message: serverErrorMsg}
+    return {
+      result: 'failure',
+      message: serverErrorMsg
+    }
   }
  
   redirect('/auth/login')

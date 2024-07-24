@@ -5,7 +5,7 @@ import { LoginSchema } from "@/app/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -15,6 +15,7 @@ import Input from "@/app/components/forms/Input";
 import CreateAccountLink from "@/app/components/authui/CreateAccountLink";
 import ForgotPasswordLink from "@/app/components/authui/ForgotPasswordLink";
 import Button from "@/app/components/layout/Button";
+import { FormState } from "@/app/lib/types";
 
 function handleLoginError(errorCode: string): string {
   switch (errorCode) {
@@ -29,10 +30,12 @@ function handleLoginError(errorCode: string): string {
   }
 }
 
+const initialState: FormState = { result: undefined }
+
 export default function LoginForm(): JSX.Element {
   const entryPageUrl = '/dashboard/home'
   const router = useRouter()
-  const [loginError, setLoginError] = useState<string>('')
+  const [state, setState] = useState<FormState>(initialState)
   
   const {handleSubmit, register, formState: {errors, isSubmitting}} = useForm<z.output<typeof LoginSchema>>({
     mode: "onBlur",
@@ -60,18 +63,24 @@ export default function LoginForm(): JSX.Element {
         ...data
       })
 
-      if(res?.error) setLoginError(handleLoginError(res.error))
-      else router.push(entryPageUrl)
+      if(res?.error) 
+        setState({
+          result: 'failure',
+          message: handleLoginError(res.error)
+        })
+      formRef.current?.reset()
+      router.push(entryPageUrl)
     })(e)
   }
 
   return (
     <div>
       <form 
-        className="flex flex-col space-y-2 mb-2 items-center" 
+        className="w-full flex flex-col space-y-2 mb-2 items-center" 
         ref={formRef} 
-        onSubmit={(e) => login(e)}>
-          <ErrorMessage hasError={loginError !== ''} message={loginError}/>
+        onSubmit={(e) => login(e)}
+        >
+          <ErrorMessage hasError={state.result === 'failure'} message={state.message}/>
           <Input 
             icon={<FaEnvelope className="text-accb-green"/>}
             {...register('email')}
@@ -92,15 +101,13 @@ export default function LoginForm(): JSX.Element {
           />
           <ErrorMessage hasError={errors.password !== undefined} message={errors.password?.message}/>
           <ForgotPasswordLink />
-          <SubmitForm>
+          <SubmitForm
+            submiting={isSubmitting}
+          >
             <Button 
-              className="w-full p-2 rounded-md border font-semibold" 
-              colors={{
-                default: "accb-green",
-                hover: "white"
-              }}
-              buttonType="submit"
-              buttonLabel="Entrar"       
+              className="w-full py-2 px-3 rounded-md border font-semibold text-white bg-accb-green border-accb-green hover:text-accb-green hover:border-accb-green hover:bg-white transition-colors" 
+              type="submit"
+              buttonlabel="Entrar"       
             />
           </SubmitForm>
           <CreateAccountLink />
