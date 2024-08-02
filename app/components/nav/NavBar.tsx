@@ -1,6 +1,6 @@
 import { NavBarProps } from "../../lib/types";
-import NavBarOption from "./NavBarOption";
 import Profile from "../userui/Profile";
+import NavBarOption from "./NavBarOption";
 
 export default function NavBar({options, isNavOpen, isMobile}: NavBarProps) { 
   let navVisibilityClass: string = ''

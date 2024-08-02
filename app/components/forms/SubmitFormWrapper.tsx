@@ -8,7 +8,7 @@ interface SubmitFormProps {
   submiting?: boolean
 }
 
-export default function SubmitForm({submiting, children}: SubmitFormProps) {  
+export default function SubmitFormWrapper({submiting, children}: SubmitFormProps) {  
   const { pending } = useFormStatus()
   
   return pending || submiting ? 

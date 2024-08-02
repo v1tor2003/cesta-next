@@ -1,10 +1,10 @@
 'use client'
-import SubmitForm from "@/app/components/forms/SubmitForm";
+import SubmitFormWrapper from "@/app/components/forms/SubmitFormWrapper";
 
 import { useFormState } from "react-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { FaEnvelope, FaLock, FaUser } from "react-icons/fa6";
-import { signUp } from "../actions";
+import { signUp } from "../../auth/actions";
 import { RegisterSchema } from "@/app/lib/schemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,6 +38,8 @@ export default function RegisterForm(): JSX.Element {
     if(state.result === 'success')
       formRef.current?.reset()
   }, [state])
+
+  // const resetErrors = () => {}
 
   return (
     <div>
@@ -82,13 +84,13 @@ export default function RegisterForm(): JSX.Element {
           required
         />
         <ErrorMessage hasError={errors.confirmPassword !== undefined} message={errors.confirmPassword?.message}/>
-        <SubmitForm >
+        <SubmitFormWrapper >
           <Button 
             className="w-full py-2 px-3 rounded-md border font-semibold text-white bg-accb-green border-accb-green hover:text-accb-green hover:border-accb-green hover:bg-white transition-colors" 
             type="submit"
             buttonlabel="Criar"       
           />
-        </SubmitForm>
+        </SubmitFormWrapper>
         <LoginAccountLink />
       </form>
     </div>

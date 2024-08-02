@@ -6,22 +6,33 @@ import { revalidatePath } from "next/cache";
 
 const serverErrorMsg: string = 'Erro interno do servidor. Por favor, tente mais tarde.'
 
-// should use prisma select to omit the usuario_senha field
-export async function getUsers(): Promise<User[]> {
+export async function getUsers(
+  itemsPerPage: number, currPage: number = 1
+): Promise<{
+  users:User[], totalUsers:number
+}> {
   let users: User[] = new Array()
   try {
-    users = (await prisma.tabela_usuarios.findMany()).map(({ usuario_senha, ...user }) => user)  
-    return users;
+    const totalUsers = await prisma.tabela_usuarios.count()
+    users = await prisma
+      .tabela_usuarios
+      .findMany({
+        select: { 
+          usuario_id: true, 
+          usuario_nome: true, 
+          usuario_email: true
+        },
+        skip: itemsPerPage * (currPage - 1),
+        take: itemsPerPage
+      })  
+    return { users, totalUsers}
   } catch (error: unknown) {
     console.log('server error')
-  }finally{
-    return users
+    return { users: [], totalUsers: 0 }
   }
 }
 
 export async function editUser(prevState: FormState, data: FormData): Promise<FormState> {
-  await new Promise(resolve => setTimeout(resolve, 2000))
-  console.log(data)
   const formData = Object.fromEntries(data)
   const parsed = EditUserSchema.safeParse(formData)
 

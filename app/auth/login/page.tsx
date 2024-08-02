@@ -1,5 +1,5 @@
 import React from 'react'
-import LoginForm from './LoginForm'
+import LoginForm from '../../components/forms/LoginForm'
 import accbLogo from '@/public/accbLogo.png'
 import Image from "next/image"
 

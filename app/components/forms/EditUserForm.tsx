@@ -1,4 +1,5 @@
 'use client'
+import { useEffect, useRef } from "react"
 import { FormState, User } from "@/app/lib/types"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -6,13 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { EditUserSchema } from "@/app/lib/schemas"
 import { useFormState, useFormStatus } from "react-dom"
 import { editUser } from "@/app/dashboard/cadastros/gerenciamento/usuarios/actions"
+
 import Input from "./Input"
 import ErrorMessage from "./ErrorMessage"
 import InputLabel from "./InputLabel"
 import Button from "../layout/Button"
 import SucessMessage from "./SucessMessage"
-import SubmitForm from "./SubmitForm"
-import { useEffect, useRef } from "react"
+import SubmitFormWrapper from "./SubmitFormWrapper"
 
 interface EditUserFormProps {
   defaultData?: User
@@ -79,13 +80,13 @@ export default function EditUserForm({defaultData}: EditUserFormProps): JSX.Elem
           required
         />
         <ErrorMessage hasError={errors.name !== undefined} message={errors.name?.message}/>
-        <SubmitForm >
+        <SubmitFormWrapper >
           <Button 
             className="w-full py-2 px-3 rounded-md border font-semibold text-white bg-accb-green border-accb-green hover:text-accb-green hover:border-accb-green hover:bg-white transition-colors" 
             type="submit"
             buttonlabel="Criar"       
           />
-        </SubmitForm>
+        </SubmitFormWrapper>
       </form>
     </div>
   )

@@ -1,7 +1,7 @@
 'use client'
-import { signOut, useSession } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
-import { MdLogout } from "react-icons/md"
+import LogOut from "./LogOut"
 
 export default function Profile() {
   const {data: session} = useSession()
@@ -17,9 +17,7 @@ export default function Profile() {
       {userName &&  
       <span className="flex rounded-full w-12 h-12 text-center text-2xl justify-center items-center bg-accb-green text-white capitalize">{userName.charAt(0)}</span>}
       <span className="mt-[10px] lowercase font-medium"> {userName.split(' ')[0]} </span>
-      <button title="Sair" onClick={() => signOut()}>
-        <MdLogout className="w-6 h-6 text-accb-green hover:cursor-pointer" aria-label="Sair" />
-      </button>
+      <LogOut />
     </div>
   )
 }

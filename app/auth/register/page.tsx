@@ -1,7 +1,7 @@
 'use client'
 import accbLogo from '@/public/accbLogo.png';
 import Image from "next/image";
-import RegisterForm from './RegisterForm';
+import RegisterForm from '../../components/forms/RegisterForm';
 
 export default function SignUpPage() {
   return (

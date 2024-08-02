@@ -8,8 +8,10 @@ import { FormState } from "../lib/types";
 const serverErrorMsg: string = 'Erro interno do servidor. Por favor, tente mais tarde.'
 
 export async function signUp(prevState: FormState, data: FormData): Promise<FormState> {
+  await new Promise((resolve) => setTimeout(resolve, 3000))
   const formData = Object.fromEntries(data)
   const parsed = RegisterSchema.safeParse(formData)
+  console.log(formData, parsed)
   
   if(!parsed.success) {
     const fields: Record<string, string> = {}
