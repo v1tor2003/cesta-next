@@ -2,8 +2,12 @@ import React from 'react'
 import LoginForm from '../../components/forms/LoginForm'
 import accbLogo from '@/public/accbLogo.png'
 import Image from "next/image"
+import { isAuthenticated } from '@/app/lib/auth/actions'
+import { redirect } from 'next/navigation'
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  if(await isAuthenticated()) redirect(process.env.HOME_PAGE ?? '')
+
   return (
     <section className="flex justify-center items-center bg-accb-green w-dvh h-lvh">
     <div className="flex flex-col items-center justify-center w-screen h-screen xs:w-80 xs:h-[32rem] transition-all xs:transition-all rounded-md bg-gray-100 ">

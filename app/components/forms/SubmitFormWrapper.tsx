@@ -1,6 +1,6 @@
 'use client'
 import { useFormStatus } from "react-dom"
-import { Oval } from "react-loader-spinner"
+import Spinner from "../layout/Spinner"
 
 interface SubmitFormProps {
   children: React.ReactNode
@@ -13,17 +13,10 @@ export default function SubmitFormWrapper({submiting, children}: SubmitFormProps
   
   return pending || submiting ? 
     (<div className="w-full flex items-center justify-center p-2 rounded-md border border-accb-green">
-      <Oval
-        visible={true}
-        height="24"
-        width="24"
-        secondaryColor="white"
-        strokeWidth={3}
-        strokeWidthSecondary={3}
-        color="#142527"
-        ariaLabel="oval-loading"
-        wrapperStyle={{}}
-        wrapperClass=""
+      <Spinner 
+        size="6"
+        color="red-500"
+        name="Entrando..."
       />
     </div>) 
     : (<>{children}</>)

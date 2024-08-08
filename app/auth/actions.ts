@@ -1,11 +1,55 @@
 'use server'
 import prisma from "../lib/prisma";
-import { RegisterSchema } from "../lib/schemas"
-import bcrypt from "bcrypt";
+import { LoginSchema, RegisterSchema } from "../lib/schemas"
+import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { FormState } from "../lib/types";
+import { signIn, signOut } from "../lib/auth/auth";
+import { AuthError } from "next-auth";
 
 const serverErrorMsg: string = 'Erro interno do servidor. Por favor, tente mais tarde.'
+
+const handleLoginError = (errorCode: string): string => {
+  const errorMesssage: { [key: string]: string } = {
+    'CredentialsSignin' : 'Credenciais inválidas. Por favor, tente de novo.',
+    'Configuration' : 'Erro de configuração do servidor.',
+    'AccessDenied': 'Accesso negado. Você não tem permissão para acessar essa página.'
+  } as const
+
+  return errorMesssage[errorCode] || 'Um erro desconhecido ocorreu. Por favor, tente de novo.'
+}
+
+export async function logOut() { await signOut({redirectTo: process.env.LOGIN_PAGE}) }
+
+export async function credentialsLogin(prevState: FormState, data: FormData): Promise<FormState>{
+  const formData = Object.fromEntries(data)
+  const parsed = LoginSchema.safeParse(formData)
+  
+  if(!parsed.success) {
+    const fields: Record<string, string> = {}
+    for(const key of Object.keys(formData))
+      fields[key] = formData[key].toString()
+
+    return {
+      result: 'failure',
+      message: 'Erro ao validar campos.',
+      fields,
+      issues: parsed.error.issues.map((issue) => issue.message)
+    }
+  }
+  let errorCode: string = ''
+  try {
+    await signIn('credentials', {
+      redirect: false,
+      ...parsed.data
+    })
+  } catch (error) {
+    if(error instanceof AuthError) errorCode = error.type
+    return { result: 'failure', message: handleLoginError(errorCode) }
+  }
+
+  redirect(process.env.HOME_PAGE ?? '')
+}
 
 export async function signUp(prevState: FormState, data: FormData): Promise<FormState> {
   await new Promise((resolve) => setTimeout(resolve, 3000))
@@ -55,5 +99,5 @@ export async function signUp(prevState: FormState, data: FormData): Promise<Form
     }
   }
  
-  redirect('/auth/login')
+  redirect(process.env.LOGIN_PAGE ?? '')
 }

@@ -1,19 +1,11 @@
-import { withAuth } from "next-auth/middleware";
-import { NextResponse } from "next/server";
+import { auth } from "./app/lib/auth/auth"
 
-export default withAuth(
-  function middleware(req){
-    if(
-      req.nextUrl.pathname.startsWith('/dashboard') &&
-      !req.nextauth.token
-    ) return NextResponse.rewrite(new URL('/auth/login', req.url))
-  },
-  {
-    callbacks: {
-      authorized: ({token}) => !!token
-    }
-  } 
-)
+export default auth((req) => {
+  if(!req.auth && req.nextUrl.pathname !== process.env.LOGIN_PAGE){
+    const newUrl = new URL(process.env.LOGIN_PAGE ?? '', req.nextUrl.origin)
+    return Response.redirect(newUrl)
+  }
+})
 
 // maybe macther is '/dashboard/:path*'
 export const config = {matcher: ['/dashboard/:path*']}
