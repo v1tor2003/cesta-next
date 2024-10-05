@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "./components/authui/AuthProvider";
-import TopLoadingBar from "./components/layout/TopLoadingBar";
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,12 +16,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
     <html lang="en">
       <AuthProvider>
         <body className={inter.className}>
-          <TopLoadingBar/>
+          <NextTopLoader showSpinner={false}/>
           {children}
         </body>
       </AuthProvider>

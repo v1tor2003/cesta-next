@@ -1,10 +1,9 @@
 "use client"
 import { Disclosure, Transition } from "@headlessui/react";
-import { NavBarOptionProps } from "../../lib/types";
 import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa";
 import { usePathname } from "next/navigation";
-
+import { NavBarOptionProps } from "./NavBar";
 interface NavLinkProps {
   icon: React.ReactNode
   label: string
@@ -12,8 +11,8 @@ interface NavLinkProps {
   children?: NavBarOptionProps[]
   isActive: boolean
 }
-
-const NavLink = ({icon, url, label, children, isActive}: NavLinkProps) => {
+// may fix the children with calling it another name
+const NavLink = ({ icon, url, label, children, isActive }: NavLinkProps) => {
   const path = usePathname()
 
   return (
@@ -21,17 +20,31 @@ const NavLink = ({icon, url, label, children, isActive}: NavLinkProps) => {
       {({ open }) => (
         <>
           <Disclosure.Button 
-            className={`${isActive ? 'bg-accb-green hover:opacity-75': 'hover:bg-gray-200'} flex items-center w-full space-x-2 rounded-md mt-1 py-2 px-3 text-left text-sm `}
+            className={`${isActive ? 'bg-accb-green hover:opacity-75': 'hover:bg-gray-200'} 
+            flex items-center w-full space-x-2 rounded-md mt-1 py-2 px-3 text-left text-sm `}
           >
-            <div className={`${isActive ? 'text-white': 'text-accb-green'} `}>{icon}</div>
+            <div className={`${isActive ? 'text-white': 'text-accb-green'} `}>
+              {icon}
+            </div>
             {children && children.length > 0 ? (
-              <span className={`${isActive ? 'text-white': 'text-accb-green'} grow font-medium text-xl`}>{label}</span>
+              <span className={`${isActive ? 'text-white': 'text-accb-green'} grow font-medium text-xl`}>
+                {label}
+              </span>
               ) : (
-              <Link href={url} legacyBehavior>
-                <span className={`${isActive ? 'text-white': 'text-accb-green'} grow font-medium text-xl`}>{label}</span>
+              <Link 
+                href={url} 
+                className="w-full"
+              >
+                <span className={`${isActive ? 'text-white': 'text-accb-green'} grow font-medium text-xl`}>
+                  {label}
+                </span>
               </Link>
             )}
-            {children && children.length > 0 && <FaChevronDown className={`${isActive ? 'text-white': 'text-accb-green'} w-4 h-auto transform ${open ? 'rotate-180' : 'rotate-0'}`} />}
+            {children && children.length > 0 && 
+              <FaChevronDown 
+                className={`${isActive ? 'text-white': 'text-accb-green'} w-4 h-auto transform ${open ? 'rotate-180' : 'rotate-0'}`} 
+              />
+            }
           </Disclosure.Button>
           <Transition
             enter="transition duration-100 ease-out"
@@ -42,7 +55,9 @@ const NavLink = ({icon, url, label, children, isActive}: NavLinkProps) => {
             leaveTo="transform scale-95 opacity-0"
           >
           <Disclosure.Panel>
-            <div className="ml-4">
+            <div 
+              className="ml-4"
+            >
               {children && children.map((child, key) =>
                 <NavLink
                   icon={child.icon}
@@ -50,7 +65,9 @@ const NavLink = ({icon, url, label, children, isActive}: NavLinkProps) => {
                   url={`${url}${child.url}`}
                   children={child.children}
                   isActive={path.startsWith(`${url}${child.url}`)}
-                  key={`child-${child.label}-${key}`} />)
+                  key={`child-${child.label}-${key}`} 
+                />
+                )
               }
             </div>
           </Disclosure.Panel>

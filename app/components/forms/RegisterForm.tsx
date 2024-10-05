@@ -39,8 +39,6 @@ export default function RegisterForm(): JSX.Element {
       formRef.current?.reset()
   }, [state])
 
-  // const resetErrors = () => {}
-
   return (
     <div>
       <form 

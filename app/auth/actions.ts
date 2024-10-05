@@ -43,16 +43,16 @@ export async function credentialsLogin(prevState: FormState, data: FormData): Pr
       redirect: false,
       ...parsed.data
     })
+
   } catch (error) {
     if(error instanceof AuthError) errorCode = error.type
     return { result: 'failure', message: handleLoginError(errorCode) }
   }
-
+  
   redirect(process.env.HOME_PAGE ?? '')
 }
-
+// registers the user
 export async function signUp(prevState: FormState, data: FormData): Promise<FormState> {
-  await new Promise((resolve) => setTimeout(resolve, 3000))
   const formData = Object.fromEntries(data)
   const parsed = RegisterSchema.safeParse(formData)
   console.log(formData, parsed)
@@ -70,14 +70,16 @@ export async function signUp(prevState: FormState, data: FormData): Promise<Form
     }
   }
 
-  const {username, email, password} = parsed.data
+  const { username, email, password } = parsed.data
   // should refactor to findUnique(), gotta update db schema fisrt
-  if(await prisma.tabela_usuarios.findFirst({ where: {usuario_email: email}}))
+  if(await prisma.tabela_usuarios.findFirst({ where: { usuario_email: email }}))
     return {
       result: 'failure',
       message: 'Erro ao criar conta. Verifique seus dados e tente de novo.'
     }
+
   const hashedPassword = bcrypt.hashSync(password, 8)
+  
   let user
   try {
     user = await prisma.tabela_usuarios.create({

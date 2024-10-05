@@ -1,13 +1,5 @@
-import Spinner from "@/app/components/layout/Spinner";
+import UserListSkeleton from "@/app/components/userui/UserListSkeleton";
 
 export default function Loading() {
-  return (
-    <section className="flex p-4">
-      <Spinner 
-        size="8"
-        color="accb-green"
-        name="Carregando..."
-      />
-    </section>
-  )
+  return  <UserListSkeleton />
 }

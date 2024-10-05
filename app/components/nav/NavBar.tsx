@@ -1,6 +1,18 @@
-import { NavBarProps } from "../../lib/types";
-import Profile from "../userui/Profile";
 import NavBarOption from "./NavBarOption";
+import RenderProfile from "../userui/RenderProfile";
+
+export interface NavBarOptionProps {
+  icon?: React.ReactNode 
+  label: string
+  url: string
+  children?: NavBarOptionProps[]
+}
+
+interface NavBarProps {
+  options: NavBarOptionProps[]
+  isNavOpen: boolean
+  isMobile: boolean
+}
 
 export default function NavBar({options, isNavOpen, isMobile}: NavBarProps) { 
   let navVisibilityClass: string = ''
@@ -14,7 +26,7 @@ export default function NavBar({options, isNavOpen, isMobile}: NavBarProps) {
           key={`parent${option.label}-${key}`}/>
         )}
       </nav>
-      <Profile />
+      <RenderProfile />
     </div>
   )
 }

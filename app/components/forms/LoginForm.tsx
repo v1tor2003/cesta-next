@@ -5,9 +5,7 @@ import { LoginSchema } from "@/app/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRef } from "react";
 
 import SubmitFormWrapper from "@/app/components/forms/SubmitFormWrapper";
 import ErrorMessage from "@/app/components/forms/ErrorMessage";

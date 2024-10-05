@@ -11,7 +11,6 @@ export default async function Users({
     page?: string,
   },
 }) {
-  await new Promise((resolve) => setTimeout(resolve, 5000))
   const usersPerPage = 5
 
   return (

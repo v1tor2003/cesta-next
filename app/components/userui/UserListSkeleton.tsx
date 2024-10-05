@@ -1,10 +1,10 @@
 import UserCardSkeleton from "./UserCardSkeleton"
 
 interface UserListSkeletonProps {
-  size: number
+  size?: number
 }
 
-export default function UserListSkeleton({ size } : UserListSkeletonProps) {
+export default function UserListSkeleton({ size = 4 } : UserListSkeletonProps) {
   //const list: number [] = Array(size)
   const list: Readonly<React.ReactNode[]> = Array(size).fill(<UserCardSkeleton/>)
   
