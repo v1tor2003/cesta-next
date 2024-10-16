@@ -32,9 +32,8 @@ export default function LoginForm(): JSX.Element {
   })
 
   const formRef = useRef<HTMLFormElement>(null)
-
-  //const resetErrors = () => state.result === 'failure' ? setState({result : undefined}) : null
-
+  // maybe should clean the form
+  
   return (
     <div>
       <form 
@@ -42,13 +41,13 @@ export default function LoginForm(): JSX.Element {
         ref={formRef} 
         action={formAction}
         >
-          <ErrorMessage hasError={state.result ? state.result === 'failure' : false} message={state.message}/>
+          <ErrorMessage hasError={!!(state?.result) ? state.result === 'failure' : false} message={state?.message}/>
           <Input 
             icon={<FaEnvelope className="text-accb-green"/>}
             {...register('email')}
             type="email" 
             placeholder="user@email.com"
-            className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-[15rem] py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
           <ErrorMessage hasError={errors.email !== undefined} message={errors.email?.message}/>
@@ -57,14 +56,14 @@ export default function LoginForm(): JSX.Element {
             {...register('password')}
             type="password"
             placeholder="********"
-            className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+            className="w-[15rem] py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
             required
           />
           <ErrorMessage hasError={errors.password !== undefined} message={errors.password?.message}/>
           <ForgotPasswordLink />
           <SubmitFormWrapper>
             <Button 
-              className="w-full py-2 px-3 rounded-md border font-semibold text-white bg-accb-green border-accb-green hover:text-accb-green hover:border-accb-green hover:bg-white transition-colors" 
+              className="w-[17em] py-2 px-3 rounded-md border font-semibold text-white bg-accb-green border-accb-green hover:text-accb-green hover:border-accb-green hover:bg-white transition-colors" 
               type="submit"
               buttonlabel="Entrar"       
             />

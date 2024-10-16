@@ -11,7 +11,7 @@ export default async function Users({
     page?: string,
   },
 }) {
-  const usersPerPage = 5
+  const usersPerPage = 4
 
   return (
     <section className="flex flex-col space-y-2">

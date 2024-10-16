@@ -1,105 +1,86 @@
 'use server'
 import prisma from "../lib/prisma";
 import { LoginSchema, RegisterSchema } from "../lib/schemas"
-import bcrypt from "bcryptjs";
+
 import { redirect } from "next/navigation";
 import { FormState } from "../lib/types";
 import { signIn, signOut } from "../lib/auth/auth";
 import { AuthError } from "next-auth";
+import { validateForm, handleLoginError }from "../lib/utils";
+import { createUser } from "../lib/auth/actions";
 
-const serverErrorMsg: string = 'Erro interno do servidor. Por favor, tente mais tarde.'
-
-const handleLoginError = (errorCode: string): string => {
-  const errorMesssage: { [key: string]: string } = {
-    'CredentialsSignin' : 'Credenciais inválidas. Por favor, tente de novo.',
-    'Configuration' : 'Erro de configuração do servidor.',
-    'AccessDenied': 'Accesso negado. Você não tem permissão para acessar essa página.'
-  } as const
-
-  return errorMesssage[errorCode] || 'Um erro desconhecido ocorreu. Por favor, tente de novo.'
+export async function logOut() { 
+  const loginUrl = process.env.LOGIN_PAGE
+  if (!loginUrl) throw new Error('Could not load login page.')  
+  await signOut({redirectTo: loginUrl}) 
 }
 
-export async function logOut() { await signOut({redirectTo: process.env.LOGIN_PAGE}) }
+function redirectHome(): undefined {
+  const homeUrl = process.env.HOME_PAGE
+  if (!homeUrl) throw new Error('Could not load home page.')  
+  return redirect(homeUrl)
+}
 
-export async function credentialsLogin(prevState: FormState, data: FormData): Promise<FormState>{
+async function doLoginUsingCredentials(
+  prevState: FormState, 
+  user: { email: string, password: string }
+): Promise<FormState> {
+  const userLoginFormData = new FormData()
+  userLoginFormData.append('email', user.email)
+  userLoginFormData.append('password', user.password)
+  
+  return credentialsLogin(prevState, userLoginFormData)
+}
+
+export async function credentialsLogin(prevState: FormState, data: FormData): Promise<FormState> {
   const formData = Object.fromEntries(data)
   const parsed = LoginSchema.safeParse(formData)
   
-  if(!parsed.success) {
-    const fields: Record<string, string> = {}
-    for(const key of Object.keys(formData))
-      fields[key] = formData[key].toString()
+  const validation = validateForm(formData, parsed)
+  
+  if(validation.hasIssues)
+    return { result: 'failure', message: 'Erro ao validar campos.', validation }
 
-    return {
-      result: 'failure',
-      message: 'Erro ao validar campos.',
-      fields,
-      issues: parsed.error.issues.map((issue) => issue.message)
-    }
-  }
-  let errorCode: string = ''
   try {
     await signIn('credentials', {
-      redirect: false,
-      ...parsed.data
+      ...parsed.data,
+      redirect: false
     })
-
-  } catch (error) {
+  }catch(error) {
+    let errorCode: string = ''
     if(error instanceof AuthError) errorCode = error.type
     return { result: 'failure', message: handleLoginError(errorCode) }
   }
   
-  redirect(process.env.HOME_PAGE ?? '')
+  redirectHome()
 }
-// registers the user
+
 export async function signUp(prevState: FormState, data: FormData): Promise<FormState> {
   const formData = Object.fromEntries(data)
   const parsed = RegisterSchema.safeParse(formData)
-  console.log(formData, parsed)
-  
-  if(!parsed.success) {
-    const fields: Record<string, string> = {}
-    for(const key of Object.keys(formData))
-      fields[key] = formData[key].toString()
-
-    return {
-      result: 'failure',
-      message: 'Erro ao validar campos.',
-      fields,
-      issues: parsed.error.issues.map((issue) => issue.message)
-    }
-  }
-
-  const { username, email, password } = parsed.data
-  // should refactor to findUnique(), gotta update db schema fisrt
-  if(await prisma.tabela_usuarios.findFirst({ where: { usuario_email: email }}))
-    return {
-      result: 'failure',
-      message: 'Erro ao criar conta. Verifique seus dados e tente de novo.'
-    }
-
-  const hashedPassword = bcrypt.hashSync(password, 8)
-  
-  let user
-  try {
-    user = await prisma.tabela_usuarios.create({
-      data: {
-        usuario_nome: username,
-        usuario_email: email,
-        usuario_senha: hashedPassword,
-      },
-    })
-    if(!user) 
-      return {
-        result: 'failure',
-        message: serverErrorMsg
-      }
-  } catch (error: unknown) {
-    return {
-      result: 'failure',
-      message: serverErrorMsg
-    }
-  }
  
-  redirect(process.env.LOGIN_PAGE ?? '')
+  const validation = validateForm(formData, parsed)
+  console.log(validation, parsed.success)
+  if(validation.hasIssues || !parsed.success)
+    return { result: 'failure', message: 'Erro ao validar campos.', validation }
+   
+  const user = {
+    usuario_email: parsed.data.email,
+    usuario_nome: parsed.data.username,
+    usuario_senha: parsed.data.password
+  }
+
+  // should refactor to findUnique(), gotta update db schema fisrt
+  if(await prisma.tabela_usuarios.findFirst({ where: { usuario_email: user.usuario_email }}))
+    return {
+      result: 'failure',
+      message: 'Erro ao criar conta! Verifique seus dados e tente de novo.'
+    }
+
+  if(!(await createUser(user))) return { result: 'failure', message: 'Algo deu errado! Por favor tente de novo.'}
+   
+  return await doLoginUsingCredentials(
+    prevState, 
+    { email: user.usuario_email, password: user.usuario_senha }
+  )
 }

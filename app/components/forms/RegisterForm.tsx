@@ -34,10 +34,7 @@ export default function RegisterForm(): JSX.Element {
 
   const formRef = useRef<HTMLFormElement>(null)
 
-  useEffect(() => { 
-    if(state.result === 'success')
-      formRef.current?.reset()
-  }, [state])
+  // maybe should clean the form
 
   return (
     <div>
@@ -46,12 +43,12 @@ export default function RegisterForm(): JSX.Element {
         ref={formRef}
         action={formAction}
       >
-        <ErrorMessage hasError={state.result === 'failure'} message={state.message}/>
+        <ErrorMessage hasError={!!(state?.result) ? state.result === 'failure' : false} message={state?.message}/>
         <Input 
           icon={<FaUser className="text-accb-green"/>}
           {...register('username')}
           placeholder="user123"
-          className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          className="w-[15rem] py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
           required
         />
         <ErrorMessage hasError={errors.username !== undefined} message={errors.username?.message}/>
@@ -60,7 +57,7 @@ export default function RegisterForm(): JSX.Element {
           {...register('email')}
           type="email"
           placeholder="user@email.com"
-          className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          className="w-[15rem] py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
           required
         />
         <ErrorMessage hasError={errors.email !== undefined} message={errors.email?.message}/>
@@ -69,7 +66,7 @@ export default function RegisterForm(): JSX.Element {
           {...register('password')}
           type="password"
           placeholder="********"
-          className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          className="w-[15rem] py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
           required
         />
         <ErrorMessage hasError={errors.password !== undefined} message={errors.password?.message}/>
@@ -78,13 +75,13 @@ export default function RegisterForm(): JSX.Element {
           {...register('confirmPassword')}
           type="password"
           placeholder="********"
-          className="w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-[15rem] py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
         <ErrorMessage hasError={errors.confirmPassword !== undefined} message={errors.confirmPassword?.message}/>
         <SubmitFormWrapper >
           <Button 
-            className="w-full py-2 px-3 rounded-md border font-semibold text-white bg-accb-green border-accb-green hover:text-accb-green hover:border-accb-green hover:bg-white transition-colors" 
+            className="w-[17rem] py-2 px-3 rounded-md border font-semibold text-white bg-accb-green border-accb-green hover:text-accb-green hover:border-accb-green hover:bg-white transition-colors" 
             type="submit"
             buttonlabel="Criar"       
           />
