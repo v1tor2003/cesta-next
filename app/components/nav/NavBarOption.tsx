@@ -21,7 +21,7 @@ const NavLink = ({ icon, url, label, children, isActive }: NavLinkProps) => {
         <>
           <Disclosure.Button 
             className={`${isActive ? 'bg-accb-green hover:opacity-75': 'hover:bg-gray-200'} 
-            flex items-center w-full space-x-2 rounded-md mt-1 py-2 px-3 text-left text-sm `}
+            flex items-center w-full space-x-2 rounded-md py-2 px-3 text-left text-sm `}
           >
             <div className={`${isActive ? 'text-white': 'text-accb-green'} `}>
               {icon}
@@ -81,7 +81,7 @@ const NavLink = ({ icon, url, label, children, isActive }: NavLinkProps) => {
 export default function NavBarOption( { icon, label, url, children}: NavBarOptionProps) {
   const path = usePathname()
   return (
-    <div className="md:mx-4 md:px-2 mt-2 px-8">
+    <div className="md:mx-4 md:px-2 px-8">
       <NavLink 
         icon={icon}
         label={label}

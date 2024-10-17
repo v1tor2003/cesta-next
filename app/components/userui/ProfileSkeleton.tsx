@@ -1,6 +1,6 @@
 export default function ProfileSkeleton() {
  return (
-    <div className="flex pb-8 justify-center space-x-2 w-full">  
+    <div className="flex py-2 sm:py-4 justify-center space-x-2 w-full">  
       <span className="flex rounded-full w-12 h-12 justify-center items-center bg-slate-400 animate-pulse">
       </span>
       <div className="flex flex-col justify-center space-y-2">

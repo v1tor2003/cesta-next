@@ -60,7 +60,7 @@ export async function signUp(prevState: FormState, data: FormData): Promise<Form
   const parsed = RegisterSchema.safeParse(formData)
  
   const validation = validateForm(formData, parsed)
-  console.log(validation, parsed.success)
+  
   if(validation.hasIssues || !parsed.success)
     return { result: 'failure', message: 'Erro ao validar campos.', validation }
    

@@ -38,7 +38,8 @@ export default function NavLayout({
     <>
       <Header isNavOpen={isNavOpen} showToggle={showToggleButton} toggleNav={toggleNav} />
       <aside
-       className={`${visibility} pt-8 col-span-2 sm:col-span-1 ${isMobile && !isNavOpen ? 'hidden' : 'block'}`}
+       className={`${visibility} pt-8 flex flex-col justify-center col-span-2 sm:col-span-1 ${isMobile && !isNavOpen ? 'hidden' : 'block'}`}
+       style={{ height: 'calc(100vh - 8rem)' }}
       >
         <NavBar options={navbarOptions} />
       </aside>
